@@ -155,7 +155,7 @@ export default {
         const projects = await this.$http.get("projects");
         this.projects = projects.data;
         const { data } = await this.$http.get("user");
-        this.managers = data.filter((e) => e.role === "manager");
+        this.managers = data.filter((e) => e.role === "qa");
         this.devs = data.filter((e) => e.role === "dev");
       } catch (error) {
         this.response = "Oops! Something went wrong.";

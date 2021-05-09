@@ -74,6 +74,8 @@
                 <v-select
                   class="required"
                   :items="roles"
+                  item-text="text"
+                  item-value="value"
                   label="Role"
                   v-model="role"
                   filled
@@ -125,9 +127,7 @@
               </v-flex>
 
               <v-flex xs12 sm12 md12>
-                <v-subheader>
-                  IN CASE OF EMERGENCY
-                </v-subheader>
+                <v-subheader> IN CASE OF EMERGENCY </v-subheader>
               </v-flex>
 
               <v-flex xs12 sm6 md6>
@@ -166,8 +166,6 @@
                   </v-flex>
                 </v-layout>
               </v-flex>
-             
-
 
               <v-flex xs12 sm12 md12>
                 <v-alert :type="alertType" v-model="isAlert" dismissible>{{
@@ -202,6 +200,8 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 import {
   required,
   maxLength,
@@ -255,6 +255,7 @@ export default {
     };
   },
   computed: {
+    ...mapState([ "role"]),
     firstNameErrors() {
       const errors = [];
       if (!this.$v.first_name.$dirty) return errors;
@@ -359,7 +360,12 @@ export default {
         { text: "Mr", id: true },
         { text: "Ms", id: false },
       ],
-      roles: ["admin", "qa", "manager","dev"],
+      roles: [
+        { text: "Admin", value: "admin" },
+        { text: "QA", value: "qa" },
+        { text: "Project Manager", value: "manager" },
+        { text: "Developer", value: "dev" },
+      ],
       confirm_password: "",
       isAlert: false,
       alertType: "success",

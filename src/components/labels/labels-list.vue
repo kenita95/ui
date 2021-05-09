@@ -2,7 +2,7 @@
   <v-layout>
     <v-flex>
       <v-card>
-        <v-card-title> View and update Project </v-card-title>
+        <v-card-title> View and update labels </v-card-title>
         <v-card-text>
           <v-text-field label="Search" v-model="search" filled> </v-text-field>
 
@@ -17,11 +17,19 @@
                 >{{ item.status === true ? "Inactivate" : "Activate" }}</v-btn
               >
             </template>
+            <template v-slot:item.colorCode="{ item }">
+            
+             <v-chip :color="item.colorCode"> {{item.colorCode}}</v-chip>
+            </template>
+            
 
             <template v-slot:item.update="{ item }">
               <v-btn
                 @click="
-                  $router.replace({ path: '/modify-project', query: { id: item.id } })
+                  $router.replace({
+                    path: '/update-label',
+                    query: { id: item.id },
+                  })
                 "
                 ><v-icon>edit</v-icon></v-btn
               >
@@ -42,14 +50,10 @@ export default {
     return {
       search: "",
       headers: [
-        { text: "ProjectId", value: "id" },
-        { text: "Project title", value: "title" },
-        { text: "Project manager", value: "pm.fullName" },
-        { text: "Project lead", value: "lead.fullName" },
+        { text: "Id", value: "id" },
+        { text: "Title", value: "title" },
         { text: "Description", value: "description" },
-        { text: "Start date", value: "startDate" },
-        { text: "End date", value: "endDate" },
-
+         { text: "Color code", value: "colorCode" },
         { text: "Update", value: "update", sortable: false },
         { text: "Update status", value: "status" },
       ],
@@ -62,7 +66,7 @@ export default {
   methods: {
     async getProjects() {
       try {
-        const users = await this.$http.get("projects");
+        const users = await this.$http.get("projectLabels");
         this.users = users.data;
       } catch (error) {
         this.response = "Oops! Something went wrong.";
@@ -74,7 +78,7 @@ export default {
       try {
         const status = !userStatus;
 
-        await this.$http.put("projects/status", {
+        await this.$http.put("projectLabels/status", {
           status,
           id,
         });
@@ -86,7 +90,6 @@ export default {
         this.isAlert = true;
       }
     },
-     
   },
 };
 </script>

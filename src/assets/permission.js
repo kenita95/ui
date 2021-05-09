@@ -25,10 +25,10 @@ const admin = [
         title: "Bugs List",
         path: "/bugs-list",
       },
-      {
-        title: "Edit Bugs",
-        path: "/Edit-Bugs",
-      },
+      // {
+      //   title: "Edit Bugs",
+      //   path: "/Edit-Bugs",
+      // },
       //{
        // title: "Delete Bugs",
        // path: "/Delete-bugs",
@@ -37,9 +37,10 @@ const admin = [
         title: "Create Project",
         path: "/create-project",
       },
+      
       {
-        title: "Modify Project",
-        path: "/Modify-project",
+        title: "Projects list",
+        path: "/projects-list",
       },
      // {
      //   title: "Delete Project",
@@ -50,12 +51,12 @@ const admin = [
        // path: "/Delete-status",
      // },
       {
-        title: "Edit Status ",
-        path: "/Edit status",
+        title: "Create labels",
+        path: "/create-label",
       },
       {
-        title: "View Status ",
-        path: "/View status",
+        title: "Labels list",
+        path: "/labels-list",
       },
       
      //{

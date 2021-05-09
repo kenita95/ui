@@ -44,6 +44,11 @@ import Developer_Progress from "../components/Report/DeveloperProgress.vue";
 import Monthly_Progress from "../components/Report/MonthlyProgress.vue";
 import SQA_Progress from "../components/Report/SQAProgress.vue";
 
+//labels
+import createLabel from "../components/labels/create-label.vue";
+import labelsList from "../components/labels/labels-list.vue";
+
+
 const routes = [
   {
     path: "/",
@@ -115,13 +120,37 @@ const routes = [
   {
     path: "/create-project",
     component: create_project,
-    name: "create project",
+    name: "Create project",
     meta: { requiresAuth: true, tag: "bugs" },
   },
   {
-    path: "/Modify-project",
+    path: "/modify-project",
+    component: create_project,
+    name: "Update project",
+    meta: { requiresAuth: true, tag: "bugs" },
+  },
+  {
+    path: "/projects-list",
     component: Modify_project,
-    name: "Modify project",
+    name: "Projects list",
+    meta: { requiresAuth: true, tag: "bugs" },
+  },
+  {
+    path: "/create-label",
+    component: createLabel,
+    name: "Create labels",
+    meta: { requiresAuth: true, tag: "bugs" },
+  },
+  {
+    path: "/update-label",
+    component: createLabel,
+    name: "Update labels",
+    meta: { requiresAuth: true, tag: "bugs" },
+  },
+  {
+    path: "/labels-list",
+    component: labelsList,
+    name: "Labels list",
     meta: { requiresAuth: true, tag: "bugs" },
   },
  {

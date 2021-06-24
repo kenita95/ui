@@ -37,7 +37,7 @@
       <v-icon color="white">note_add</v-icon>
 
       <v-toolbar-title class="white--text">
-        Bug manager
+        Enuri Information System
         <v-chip color="secondary" text-color="white" v-if="token">
           {{ name }}
         </v-chip>

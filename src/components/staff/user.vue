@@ -9,7 +9,7 @@
         <v-card-text>
           <v-form ref="form">
             <v-layout row wrap>
-              <v-flex xs12 sm6 md3>
+              <!-- <v-flex xs12 sm6 md3>
                 <v-select
                   class="required"
                   :items="titles"
@@ -20,8 +20,8 @@
                   filled
                 >
                 </v-select>
-              </v-flex>
-              <v-flex xs12 sm6 md3>
+              </v-flex> -->
+              <v-flex xs12 sm6 md4>
                 <v-text-field
                   class="required"
                   label="First name"
@@ -34,7 +34,7 @@
                 </v-text-field>
               </v-flex>
 
-              <v-flex xs12 sm6 md3>
+              <v-flex xs12 sm6 md4>
                 <v-text-field
                   label="Last name"
                   v-model="last_name"
@@ -47,7 +47,7 @@
                 </v-text-field>
               </v-flex>
 
-              <v-flex xs12 sm6 md3>
+              <v-flex xs12 sm6 md4>
                 <v-text-field
                   class="required"
                   label="Email"

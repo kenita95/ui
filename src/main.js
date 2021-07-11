@@ -25,13 +25,13 @@ axios.defaults.headers.common.Authorization = window.sessionStorage.getItem(
 Vue.config.productionTip = false;
 
 const config = {
-  apiKey: 'AIzaSyAH_mashdIxej3GG15lg8h72Aboo91CXYI',
-  authDomain: 'retirement-cal.firebaseapp.com',
-  databaseURL: 'https://retirement-cal.firebaseio.com',
-  projectId: 'retirement-cal',
-  storageBucket: 'retirement-cal.appspot.com',
-  messagingSenderId: '253083084191',
-  appId: '1:253083084191:web:05fc8c2b34df67029bc9aa',
+  apiKey: "AIzaSyDzSfXxC6-kBBWDJMQ0fkEPjzm82vKGBCg",
+  authDomain: "bug-manager-8189a.firebaseapp.com",
+  projectId: "bug-manager-8189a",
+  storageBucket: "bug-manager-8189a.appspot.com",
+  messagingSenderId: "193587336578",
+  appId: "1:193587336578:web:5b4fbf6465053262a82b9b",
+  measurementId: "G-XQMZJBC3C8"
 };
 Vue.prototype.$firebase = firebase.initializeApp(config);
 

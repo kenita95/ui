@@ -50,7 +50,10 @@
                   multiple
                   label="File input"
                   outlined
+                  @change="onUpload"
                 ></v-file-input>
+
+                <a :href="fileSrc" v-if="fileSrc" target="_blank">View file</a>
               </v-flex>
               <v-flex xs12 sm12 md12>
                 <v-layout row>
@@ -82,12 +85,14 @@
           </v-form>
         </v-card-text>
         <v-card-actions>
-          <v-btn class="success" :disabled="$v.$invalid" @click="create"
-          v-if="isCreateComponent"
+          <v-btn
+            class="success"
+            :disabled="$v.$invalid"
+            @click="create"
+            v-if="isCreateComponent"
             >create</v-btn
           >
-          <v-btn class="success" :disabled="$v.$invalid" @click="update"
-          v-else
+          <v-btn class="success" :disabled="$v.$invalid" @click="update" v-else
             >update</v-btn
           >
           <v-btn class="warning" @click="$refs.project.reset()">reset</v-btn>
@@ -103,10 +108,7 @@
 </template>
 
 <script>
-import {
-  required,
-  maxLength,
-} from "vuelidate/lib/validators";
+import { required, maxLength } from "vuelidate/lib/validators";
 
 export default {
   mounted() {
@@ -162,6 +164,7 @@ export default {
       response: "",
       isCreateComponent: true,
       id: null,
+      fileSrc: "",
     };
   },
   methods: {
@@ -185,6 +188,7 @@ export default {
           description: this.description,
           startDate: this.startDate,
           endDate: this.endDate,
+          fileSrc: this.fileSrc,
         };
         await this.$http.post("projects", formData);
         this.response = "Project created successfully!";
@@ -223,7 +227,7 @@ export default {
         this.isAlert = true;
       }
     },
-     async update() {
+    async update() {
       try {
         const formData = {
           title: this.title,
@@ -232,13 +236,30 @@ export default {
           description: this.description,
           startDate: this.startDate,
           endDate: this.endDate,
+          fileSrc: this.fileSrc,
         };
         await this.$http.put(`projects/update/${this.id}`, formData);
-       this.$router.push('/projects-list')
+        this.$router.push("/projects-list");
       } catch (error) {
         this.response = "Oops! Something went wrong.";
         this.alertType = "error";
         this.isAlert = true;
+      }
+    },
+    async onUpload(file) {
+      file = file[0];
+      try {
+        const storageRef = this.$firebase.storage().ref();
+        const fileRef = storageRef.child(`project/${file.name}`);
+        const uploadTaskSnapshot = await fileRef.put(file);
+        const fileUrl = await uploadTaskSnapshot.ref.getDownloadURL();
+        console.log("fileUrl", fileUrl);
+        this.fileSrc = fileUrl;
+      } catch (error) {
+        console.log(error);
+        this.alertType = "error";
+        this.alert = "Oops! Something went wrong.";
+        this.hasAlert = true;
       }
     },
   },

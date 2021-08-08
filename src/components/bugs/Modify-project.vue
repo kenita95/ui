@@ -21,10 +21,16 @@
             <template v-slot:item.update="{ item }">
               <v-btn
                 @click="
-                  $router.replace({ path: '/modify-project', query: { id: item.id } })
+                  $router.replace({
+                    path: '/modify-project',
+                    query: { id: item.id },
+                  })
                 "
                 ><v-icon>edit</v-icon></v-btn
               >
+            </template>
+            <template v-slot:item.fileSrc="{ item }">
+              <a v-if="item.fileSrc" :href="item.fileSrc" target="_blank">View</a>
             </template>
           </v-data-table>
         </v-card-text>
@@ -49,7 +55,7 @@ export default {
         { text: "Description", value: "description" },
         { text: "Start date", value: "startDate" },
         { text: "End date", value: "endDate" },
-
+        { text: "File", value: "fileSrc" },
         { text: "Update", value: "update", sortable: false },
         { text: "Update status", value: "status" },
       ],
@@ -86,7 +92,6 @@ export default {
         this.isAlert = true;
       }
     },
-     
   },
 };
 </script>

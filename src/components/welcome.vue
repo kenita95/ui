@@ -3,7 +3,7 @@
     <v-flex xs12 sm12 md9 class="l d-none d-sm-flex">
       <v-img src="../assets/welcome.jpg" width="100%"></v-img>
     </v-flex>
-    <v-flex xs12 sm12 md3 class="r" :class="{'pa-6':height <= 400}">
+    <v-flex xs12 sm12 md3 class="r" :class="{ 'pa-6': height <= 400 }">
       <p>Login to start your session 📈</p>
 
       <v-text-field
@@ -39,7 +39,7 @@
         >Login</v-btn
       >
     </v-flex>
-      <v-flex xs12 sm12 md12>
+    <v-flex xs12 sm12 md12>
       <v-alert type="error" v-model="isAlert" dismissible>{{
         alertText
       }}</v-alert>
@@ -112,20 +112,25 @@ export default {
           password: this.password,
         });
 
-        console.log(1,sign_in.data)
+        console.log(1, sign_in.data);
 
         await this.$store.dispatch("sign_in", sign_in.data);
-        console.log(3)
+        console.log(3);
         if (this.role === "admin") {
-          console.log('if')
+          console.log("if");
           this.$router.push({ path: "/dashboard" });
+        } else if (
+          sign_in.data.role === "dev" &&
+          sign_in.data.permissions.includes("/bugs-list")
+        ) {
+          this.$router.push({ path: "/bugs-list" });
         } else {
-          console.log('else',this.permissions)
+          console.log("else", this.permissions);
           this.$router.push({ path: this.permissions[1] });
         }
-        console.log(2)
+        console.log(2);
       } catch (error) {
-        console.log('error',error);
+        console.log("error", error);
         this.alertText = "Login failed";
         this.isAlert = true;
       }

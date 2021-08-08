@@ -11,7 +11,7 @@
             class="elevation-1"
           >
             <template v-slot:item.fileUrl="{ item }">
-              <a :href="item.fileUrl" v-if="item.fileUrl">view</a>
+              <a :href="item.fileUrl" v-if="item.fileUrl" target="_blank">view</a>
             </template>
             <template v-slot:item.comments="{ item }">
               <v-btn @click="show = true">comments</v-btn>

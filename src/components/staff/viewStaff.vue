@@ -5,6 +5,7 @@
         response
       }}</v-alert>
     </v-flex>
+    
 
     <v-flex xs12 sm12 md12>
       <v-card v-if="hasDataLoad">
@@ -47,6 +48,7 @@
 <script>
 export default {
   mounted() {
+    console.log("mounted")
     if (this.$route.query.id) {
       this.readById(this.$route.query.id);
     }

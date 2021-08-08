@@ -10,6 +10,7 @@ import greetings from "../components/greetings.vue";
 
 import user from "../components/staff/user.vue";
 import usersList from "../components/staff/usersList.vue";
+import viewUser from "../components/staff/viewStaff.vue"
 
 import settings from "../components/settings.vue";
 
@@ -80,6 +81,14 @@ const routes = [
     name: "Users list",
     meta: { requiresAuth: true, tag: "User" },
   },
+  {
+    path: "/viewStaff",
+    component: viewUser,
+    name: "View user",
+    meta: { requiresAuth: true, tag: "User" },
+  },
+
+  
 
   {
     path: "/create-bug",

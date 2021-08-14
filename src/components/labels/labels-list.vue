@@ -17,9 +17,9 @@
                 >{{ item.status === true ? "Inactivate" : "Activate" }}</v-btn
               >
             </template>
-            <template v-slot:item.colorCode="{ item }">
+            <template v-slot:item.labelType="{ item }">
             
-             <v-chip :color="item.colorCode"> {{item.colorCode}}</v-chip>
+             <v-chip :color="item.colorCode"> {{item.labelType}}</v-chip>
             </template>
             
 
@@ -53,7 +53,7 @@ export default {
         { text: "Id", value: "id" },
         { text: "Title", value: "title" },
         { text: "Description", value: "description" },
-         { text: "Color code", value: "colorCode" },
+         { text: "Label type", value: "labelType" },
         { text: "Update", value: "update", sortable: false },
         { text: "Update status", value: "status" },
       ],

@@ -11,22 +11,60 @@
             class="elevation-1"
           >
             <template v-slot:item.fileUrl="{ item }">
-              <a :href="item.fileUrl" v-if="item.fileUrl" target="_blank">view</a>
+              <a :href="item.fileUrl" v-if="item.fileUrl" target="_blank"
+                >view</a
+              >
             </template>
             <template v-slot:item.comments="{ item }">
-              <v-btn @click="show = true">comments</v-btn>
+              <v-btn @click="showComments(item.id)">comments</v-btn>
+            </template>
+            <template v-slot:item.update="{ item }">
+              <v-btn
+                @click="
+                  $router.replace({
+                    path: '/create-bug',
+                    query: { id: item.id },
+                  })
+                "
+                v-if="role !== 'dev'"
+                ><v-icon>edit</v-icon></v-btn
+              >
+              <v-btn
+                color="blue"
+                v-if="
+                  role === 'dev' && ['Open', 'Re-opened'].includes(item.status)
+                "
+                @click="update(item.id,'In-progress')"
+                >In progress</v-btn
+              >
+              <v-btn
+                v-if="role === 'dev' && item.status === 'In-progress'"
+                color="green"
+                @click="update(item.id,'Dev done')"
+                >Dev done</v-btn
+              >
             </template>
           </v-data-table>
         </v-card-text>
       </v-card>
     </v-flex>
-    <Comments :show="show" :chats="chats" />
+
+    <Comments
+      :show="show"
+      :comments="comments"
+      :bugId="bugId"
+      @reload="showComments($event)"
+    />
   </v-layout>
 </template>
 
 <script>
 import Comments from "../comments/Comments.vue";
+import { mapState } from "vuex";
 export default {
+  computed: {
+    ...mapState(["role"]),
+  },
   components: {
     Comments,
   },
@@ -55,37 +93,13 @@ export default {
         { text: "Status", value: "status" },
         { text: "Attacments", value: "fileUrl" },
         { text: "Comment", value: "comments" },
+        { text: "Update", value: "update" },
       ],
-      bugId: [
-        {
-          Priority: "",
-          Assignfrom: 159,
-          AssignTo: 6.0,
-          Project: 24,
-          status: 4.0,
-          version: "",
-          DetectedDate: "",
-        },
-      ],
+      bugId: null,
       items: [],
       show: false,
-      chats: [
-        {
-          user: "PK",
-          color: "indigo",
-          text: "This will take 2 days to fixed.",
-        },
-         {
-          user: "KH",
-          color: "teal",
-          text: "How long will this take to be fixed?",
-        },
-        //  {
-        //   user: "KH",
-        //   color: "yellow",
-        //   text: "Bug reported in  Banner uploading section.",
-        // },
-      ],
+
+      comments: [],
     };
   },
   methods: {
@@ -93,6 +107,32 @@ export default {
       try {
         const { data } = await this.$http.get("bugs");
         this.items = data;
+      } catch (error) {
+        this.response = "Oops! Something went wrong.";
+        this.alertType = "error";
+        this.isAlert = true;
+      }
+    },
+    async showComments(id) {
+      try {
+        this.bugId = id;
+        const { data } = await this.$http.get(`comment/${id}`);
+        this.show = true;
+        this.comments = data;
+      } catch (error) {
+        this.response = "Oops! Something went wrong.";
+        this.alertType = "error";
+        this.isAlert = true;
+      }
+    },
+    async update(id,status) {
+      try {
+        const formData = {
+         
+          status,
+        };
+        await this.$http.put(`bugs/${id}`, formData);
+        this.getBugs();
       } catch (error) {
         this.response = "Oops! Something went wrong.";
         this.alertType = "error";

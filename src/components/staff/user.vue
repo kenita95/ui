@@ -365,6 +365,8 @@ export default {
         { text: "QA", value: "qa" },
         { text: "Project Manager", value: "manager" },
         { text: "Developer", value: "dev" },
+        { text: "Product Owner", value: "owner" },
+
       ],
       confirm_password: "",
       isAlert: false,

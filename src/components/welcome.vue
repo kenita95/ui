@@ -1,5 +1,10 @@
 <template>
   <v-layout row wrap align-center class="layout">
+    <v-flex xs12 sm12 md12>
+      <v-alert type="error" v-model="isAlert" dismissible>{{
+        alertText
+      }}</v-alert>
+    </v-flex>
     <v-flex xs12 sm12 md9 class="l d-none d-sm-flex">
       <v-img src="../assets/welcome.jpg" width="100%"></v-img>
     </v-flex>
@@ -38,11 +43,6 @@
         @click="handleLogin()"
         >Login</v-btn
       >
-    </v-flex>
-    <v-flex xs12 sm12 md12>
-      <v-alert type="error" v-model="isAlert" dismissible>{{
-        alertText
-      }}</v-alert>
     </v-flex>
   </v-layout>
 </template>

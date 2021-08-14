@@ -44,6 +44,8 @@
                   :error-messages="descriptionErrors"
                   @input="$v.description.$touch()"
                 ></v-textarea>
+              </v-flex>
+              <v-flex xs12 sm12 md4>
                 <v-file-input
                   show-size
                   counter

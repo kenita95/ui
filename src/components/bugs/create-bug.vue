@@ -3,7 +3,9 @@
     <v-flex xs12 sm12 md12>
       <v-form ref="form">
         <v-card>
-          <v-card-title> Create a bug </v-card-title>
+          <v-card-title
+            >{{ isCreateComponent ? " Create a bug" : "Update a bug" }}
+          </v-card-title>
           <v-card-text>
             <v-layout row>
               <v-flex xs12 sm12 md6>
@@ -75,7 +77,7 @@
                   :items="resolutions"
                   item-text="text"
                   item-value="value"
-                  :disabled="isCreate"
+                  :disabled="isCreateComponent"
                   v-model="resolution"
                 ></v-select>
               </v-flex>
@@ -87,12 +89,11 @@
                 ></v-text-field>
               </v-flex>
               <v-flex xs12 sm12 md6>
-                <v-text-field
-                  label="Status"
-                  placeholder="Text here"
+                <v-select
+                  :items="statusList"
                   v-model="status"
-                  :disabled="isCreate"
-                ></v-text-field>
+                  :disabled="isCreateComponent"
+                ></v-select>
               </v-flex>
               <v-flex xs12 sm12 md12>
                 <v-text-field
@@ -112,11 +113,12 @@
               <v-flex xs12 sm12 md12 justify="center">
                 <v-date-picker v-model="datePicked" full-width></v-date-picker>
               </v-flex>
-              <v-flex xs12 sm12 md12 justify="center">
+              <v-flex xs12 sm12 md4 justify="center">
                 <v-file-input
                   show-size
                   label="File input"
                   @change="onUpload"
+                  outlined
                 ></v-file-input>
                 <a :href="fileUrl" v-if="fileUrl">View file</a>
               </v-flex>
@@ -128,8 +130,18 @@
               color="primary"
               @click="create()"
               :disabled="$v.$invalid"
+              v-if="isCreateComponent"
             >
               Create
+            </v-btn>
+            <v-btn
+              rounded
+              color="warning"
+              @click="update()"
+              :disabled="$v.$invalid"
+              v-else
+            >
+              Update
             </v-btn>
             <v-btn rounded color="red" @click="reset"> Reset </v-btn>
           </v-card-actions>
@@ -169,10 +181,20 @@ export default {
   },
   mounted() {
     this.getProjects();
+    if (this.$route.query.id) {
+      this.isCreateComponent = false;
+      this.readById(this.$route.query.id);
+    }
   },
   data: () => ({
-    isCreate: true,
-    items: [{ text: "S1" }, { text: "S2" }, { text: "S3" }, { text: "S4" }],
+    items: [
+      { text: "Blocker" },
+      { text: "Critical" },
+      { text: "Major" },
+      { text: "Minor" },
+      { text: "Trivial" },
+      { text: "Enhancement" },
+    ],
     prorityItem: [
       { text: "High", value: "High" },
       { text: "Medium", value: "Medium" },
@@ -188,6 +210,16 @@ export default {
       { text: "R1", value: "r1" },
       { text: "R2", value: "r2" },
       { text: "R3", value: "r3" },
+    ],
+    statusList: [
+      "Open",
+      "In-progress",
+      "Dev done",
+      "Ready for testing",
+      "Testing",
+      "Re-opened",
+      "Done",
+      "Canceled",
     ],
     labels: [],
     projects: [],
@@ -209,6 +241,8 @@ export default {
     isAlert: false,
     alertType: "success",
     response: "",
+    isCreateComponent: true,
+    id: null,
   }),
   methods: {
     async getProjects() {
@@ -229,7 +263,6 @@ export default {
     async create() {
       try {
         const formData = {
-          status: this.status,
           priority: this.priority,
           assignee: this.assignee,
           assignedTo: this.assignedTo,
@@ -242,6 +275,7 @@ export default {
           comment: this.comment,
           datePicked: this.datePicked,
           fileUrl: this.fileUrl,
+          status: this.status,
         };
         await this.$http.post("bugs", formData);
         this.response = "Bug created successfully!";
@@ -273,6 +307,61 @@ export default {
       this.$refs.form.reset();
 
       this.$v.$reset();
+    },
+    async readById(proId) {
+      try {
+        const { data } = await this.$http.get(`bugs/${proId}`);
+        this.id = proId;
+        this.priority = data.priority;
+        this.assignee = data.assignee;
+        this.severity = data.severity;
+        this.assignedTo = data.assignedTo;
+        this.environment = data.environment;
+        this.labelId = data.labelId;
+        this.projectId = data.projectId;
+        this.existingVersion = data.existingVersion;
+        this.status = data.status;
+        this.comment = data.comment;
+        this.fileUrl = data.fileUrl;
+        this.datePicked = data.datePicked;
+        this.resolution = data.resolution;
+        this.status = data.status;
+        console.log("status", data.status);
+      } catch (error) {
+        this.response = "Error! While loading the data from API.";
+        this.alertType = "error";
+        this.isAlert = true;
+      }
+    },
+    async update() {
+      try {
+        const formData = {
+          priority: this.priority,
+          assignee: this.assignee,
+          assignedTo: this.assignedTo,
+          severity: this.severity,
+          environment: this.environment,
+          labelId: this.labelId,
+          projectId: this.projectId,
+          resolution: this.resolution,
+          existingVersion: this.existingVersion,
+          comment: this.comment,
+          datePicked: this.datePicked,
+          fileUrl: this.fileUrl,
+          status: this.status,
+        };
+        await this.$http.put(`bugs/${this.id}`, formData);
+        this.$router.push("/bugs-list");
+        // this.response = "Bug created successfully!";
+        // this.alertType = "success";
+        // this.isAlert = true;
+        // this.$refs.form.reset();
+        // this.$v.$reset();
+      } catch (error) {
+        this.response = "Oops! Something went wrong.";
+        this.alertType = "error";
+        this.isAlert = true;
+      }
     },
   },
 };

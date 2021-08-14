@@ -27,12 +27,44 @@
                   :error-messages="descriptionErrors"
                   @input="$v.description.$touch()"
                 ></v-textarea>
-               
-                <v-color-picker
-                  dot-size="25"
-                  swatches-max-height="200"
-                  v-model="colorCode"
-                ></v-color-picker>
+
+                <v-radio-group row v-model="labelType">
+                  <v-radio
+                    label="Security"
+                    value="Security"
+                    color="red"
+                  ></v-radio>
+                  <v-radio
+                    label="Feature"
+                    value="Feature"
+                    color="blue"
+                  ></v-radio>
+                  <v-radio
+                    label="Maintenance"
+                    value="Maintenance"
+                    color="orange"
+                  ></v-radio>
+                  <v-radio
+                    label="Think / Check"
+                    value="Think / Check"
+                    color="teal"
+                  ></v-radio>
+                  <v-radio
+                    label="Design"
+                    value="Design"
+                    color="purple"
+                  ></v-radio>
+                  <v-radio
+                    label="Visuals"
+                    value="Visuals"
+                    color="green"
+                  ></v-radio>
+                  <v-radio
+                    label="Infrastructure"
+                    value="Infrastructure"
+                    color="pink"
+                  ></v-radio>
+                </v-radio-group>
               </v-flex>
             </v-layout>
           </v-form>
@@ -106,6 +138,7 @@ export default {
       response: "",
       isCreateComponent: true,
       id: null,
+      labelType: "Security",
     };
   },
   methods: {
@@ -115,6 +148,7 @@ export default {
           title: this.title,
           description: this.description,
           colorCode: this.colorCode,
+          labelType:this.labelType
         };
         await this.$http.post("projectLabels", formData);
         this.response = "Label created successfully!";
@@ -131,7 +165,7 @@ export default {
     async readById(proId) {
       try {
         const { data } = await this.$http.get(`projectLabels/${proId}`);
-        const { id, title, description ,colorCode} = data;
+        const { id, title, description, colorCode } = data;
         this.id = id;
         this.title = title;
         this.description = description;
@@ -148,6 +182,7 @@ export default {
           title: this.title,
           colorCode: this.colorCode,
           description: this.description,
+        labelType:this.labelType
         };
         await this.$http.put(`projectLabels/update/${this.id}`, formData);
         this.$router.push("/labels-list");

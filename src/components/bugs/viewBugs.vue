@@ -83,6 +83,7 @@ export default {
           value: "id",
         },
         { text: "Title", value: "title" },
+        { text: "Description", value: "comment" },
         { text: "Priority", value: "priority" },
         { text: "Assign From", value: "assigneeId.fullName" },
         { text: "Assign To", value: "assignedToId.fullName" },

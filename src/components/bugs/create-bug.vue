@@ -114,7 +114,7 @@
               <v-textarea label="Text here"></v-textarea>
             </v-flex> -->
               <v-flex xs12 sm12 md12>
-                <v-textarea label="Comment here" v-model="comment"></v-textarea>
+                <v-textarea label="Description" v-model="comment"></v-textarea>
               </v-flex>
 
               <v-flex xs12 sm12 md12 justify="center">

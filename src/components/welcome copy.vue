@@ -110,7 +110,7 @@ export default {
           this.$router.push({ path: this.permissions[1] });
         }
       } catch (error) {
-        console.log(error);
+        
         this.alertText = "Login failed";
         this.isAlert = true;
       }

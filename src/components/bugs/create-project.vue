@@ -12,7 +12,7 @@
                 <v-text-field
                   label="Project title"
                   v-model="title"
-                  counter="15"
+                  counter="25"
                   :error-messages="titleErrors"
                   @input="$v.title.$touch()"
                 ></v-text-field>
@@ -124,7 +124,7 @@ export default {
 
   validations() {
     return {
-      title: { required, maxLength: maxLength(15) },
+      title: { required, maxLength: maxLength(25) },
       managerId: { required },
       leadId: { required },
       description: { maxLength: maxLength(300) },
@@ -138,7 +138,7 @@ export default {
       if (!this.$v.title.$dirty) return errors;
       if (!this.$v.title.required) errors.push("Title is required.");
       if (!this.$v.title.maxLength) {
-        errors.push("Maximum characters for the title is 15.");
+        errors.push("Maximum characters for the title is 25.");
       }
       return errors;
     },
@@ -192,12 +192,12 @@ export default {
           endDate: this.endDate,
           fileSrc: this.fileSrc,
         };
+        this.$refs.project.reset();
+        this.$v.$reset();
         await this.$http.post("projects", formData);
         this.response = "Project created successfully!";
         this.alertType = "success";
         this.isAlert = true;
-        this.$refs.project.reset();
-        this.$v.$reset();
       } catch (error) {
         this.response = "Oops! Something went wrong.";
         this.alertType = "error";
@@ -255,10 +255,10 @@ export default {
         const fileRef = storageRef.child(`project/${file.name}`);
         const uploadTaskSnapshot = await fileRef.put(file);
         const fileUrl = await uploadTaskSnapshot.ref.getDownloadURL();
-        console.log("fileUrl", fileUrl);
+       
         this.fileSrc = fileUrl;
       } catch (error) {
-        console.log(error);
+       
         this.alertType = "error";
         this.alert = "Oops! Something went wrong.";
         this.hasAlert = true;

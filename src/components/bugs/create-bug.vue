@@ -9,6 +9,13 @@
           <v-card-text>
             <v-layout row>
               <v-flex xs12 sm12 md6>
+                <v-text-field
+                  label="Title"
+                  v-model="title"
+                  counter="25"
+                ></v-text-field>
+              </v-flex>
+              <v-flex xs12 sm12 md6>
                 <v-select
                   label="Bug priority"
                   :items="prorityItem"
@@ -111,6 +118,7 @@
               </v-flex>
 
               <v-flex xs12 sm12 md12 justify="center">
+                <p>Detected Date</p>
                 <v-date-picker v-model="datePicked" full-width></v-date-picker>
               </v-flex>
               <v-flex xs12 sm12 md4 justify="center">
@@ -174,6 +182,7 @@ export default {
       status: { required },
       comment: { maxLength: maxLength(300) },
       datePicked: { required },
+      title: { required, maxLength: maxLength(25) },
     };
   },
   computed: {
@@ -243,6 +252,7 @@ export default {
     response: "",
     isCreateComponent: true,
     id: null,
+    title: "",
   }),
   methods: {
     async getProjects() {
@@ -250,7 +260,8 @@ export default {
         const labels = await this.$http.get("projectLabels");
         this.labels = labels.data;
         const projects = await this.$http.get("projects");
-        this.projects = projects.data;
+       
+        this.projects = projects.data.filter(e=> e.status === true)
         const { data } = await this.$http.get("user");
         this.managers = data.filter((e) => e.role === "qa");
         this.devs = data.filter((e) => e.role === "dev");
@@ -276,14 +287,16 @@ export default {
           datePicked: this.datePicked,
           fileUrl: this.fileUrl,
           status: this.status,
+          title: this.title,
         };
         await this.$http.post("bugs", formData);
+        this.$refs.form.reset();
+        this.$v.$reset();
         this.response = "Bug created successfully!";
         this.alertType = "success";
         this.isAlert = true;
-        this.$refs.form.reset();
-        this.$v.$reset();
       } catch (error) {
+       
         this.response = "Oops! Something went wrong.";
         this.alertType = "error";
         this.isAlert = true;
@@ -326,7 +339,8 @@ export default {
         this.datePicked = data.datePicked;
         this.resolution = data.resolution;
         this.status = data.status;
-        console.log("status", data.status);
+        this.title = data.title;
+       
       } catch (error) {
         this.response = "Error! While loading the data from API.";
         this.alertType = "error";
@@ -349,6 +363,7 @@ export default {
           datePicked: this.datePicked,
           fileUrl: this.fileUrl,
           status: this.status,
+          title: this.title,
         };
         await this.$http.put(`bugs/${this.id}`, formData);
         this.$router.push("/bugs-list");

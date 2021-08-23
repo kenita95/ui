@@ -4,11 +4,13 @@
       <v-card>
         <v-card-title> VIEW BUGS </v-card-title>
         <v-card-text>
+          <v-text-field label="Search" v-model="search" filled> </v-text-field>
           <v-data-table
             :headers="headers"
             :items="items"
             :items-per-page="5"
             class="elevation-1"
+            :search="search"
           >
             <template v-slot:item.fileUrl="{ item }">
               <a :href="item.fileUrl" v-if="item.fileUrl" target="_blank"
@@ -34,13 +36,13 @@
                 v-if="
                   role === 'dev' && ['Open', 'Re-opened'].includes(item.status)
                 "
-                @click="update(item.id,'In-progress')"
+                @click="update(item.id, 'In-progress')"
                 >In progress</v-btn
               >
               <v-btn
                 v-if="role === 'dev' && item.status === 'In-progress'"
                 color="green"
-                @click="update(item.id,'Dev done')"
+                @click="update(item.id, 'Dev done')"
                 >Dev done</v-btn
               >
             </template>
@@ -77,9 +79,10 @@ export default {
         {
           text: "Bug id",
           align: "start",
-          sortable: false,
+          // sortable: false,
           value: "id",
         },
+        { text: "Title", value: "title" },
         { text: "Priority", value: "priority" },
         { text: "Assign From", value: "assigneeId.fullName" },
         { text: "Assign To", value: "assignedToId.fullName" },
@@ -92,13 +95,16 @@ export default {
         { text: "Detected Date", value: "datePicked" },
         { text: "Status", value: "status" },
         { text: "Attacments", value: "fileUrl" },
+        { text: "Created Date", value: "createdDate" },
+        { text: "Last Updated", value: "updatedDate" },
+
         { text: "Comment", value: "comments" },
         { text: "Update", value: "update" },
       ],
       bugId: null,
       items: [],
       show: false,
-
+      search: "",
       comments: [],
     };
   },
@@ -125,10 +131,9 @@ export default {
         this.isAlert = true;
       }
     },
-    async update(id,status) {
+    async update(id, status) {
       try {
         const formData = {
-         
           status,
         };
         await this.$http.put(`bugs/${id}`, formData);

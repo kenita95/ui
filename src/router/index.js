@@ -17,7 +17,7 @@ router.beforeEach((to, from, next) => {
       if (store.state["role"] === "admin") {
         next();
       } else {
-        console.log("path", to.path);
+       
         if (
           store.state["permissions"].includes(to.path) ||
           [

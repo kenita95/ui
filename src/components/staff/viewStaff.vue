@@ -48,7 +48,7 @@
 <script>
 export default {
   mounted() {
-    console.log("mounted")
+  
     if (this.$route.query.id) {
       this.readById(this.$route.query.id);
     }

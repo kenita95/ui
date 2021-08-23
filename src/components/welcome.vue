@@ -112,25 +112,30 @@ export default {
           password: this.password,
         });
 
-        console.log(1, sign_in.data);
+       
 
         await this.$store.dispatch("sign_in", sign_in.data);
-        console.log(3);
+       
         if (this.role === "admin") {
-          console.log("if");
+          
           this.$router.push({ path: "/dashboard" });
         } else if (
           sign_in.data.role === "dev" &&
           sign_in.data.permissions.includes("/bugs-list")
         ) {
           this.$router.push({ path: "/bugs-list" });
+        } else if (
+          sign_in.data.role === "manager" &&
+          sign_in.data.permissions.includes("/create-bug")
+        ) {
+          this.$router.push({ path: "/create-bug" });
         } else {
-          console.log("else", this.permissions);
+         
           this.$router.push({ path: this.permissions[1] });
         }
-        console.log(2);
+       
       } catch (error) {
-        console.log("error", error);
+       
         this.alertText = "Login failed";
         this.isAlert = true;
       }

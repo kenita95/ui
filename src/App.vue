@@ -100,9 +100,7 @@ export default {
             e.items = e.items.filter((i) => {
               let p = this.permissions.join(",");
               let path = i.path;
-              // console.log("p", path);
-
-              // check customer
+            
               if (
                 [
                   "/create-customer/true/false",

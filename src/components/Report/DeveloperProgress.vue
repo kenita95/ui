@@ -34,11 +34,11 @@
               </v-flex>
               <v-flex xs12 sm12 md3>
                 <v-select
-                  label="Developer"
-                  :items="bugStatusList"
+                  label="Developers"
+                  :items="devs"
                   item-text="fullName"
                   item-value="id"
-                  v-model="bugStatus"
+                  v-model="devsList"
                   multiple
                   outlined
                 ></v-select>
@@ -64,7 +64,7 @@
                   outlined
                 ></v-select>
               </v-flex>
-               <v-flex xs12 sm12 md3>
+              <v-flex xs12 sm12 md3>
                 <v-select
                   label="Severity"
                   :items="items"
@@ -78,8 +78,21 @@
           </v-form>
         </v-card-text>
         <v-card-actions>
-          <v-btn class="success" :disabled="$v.$invalid" @click="create"
+          <!-- <v-btn class="success" :disabled="$v.$invalid" @click="create"
             >generate</v-btn
+          > -->
+          <JsonExcel
+            class="btn"
+            :fetch="create"
+            :fields="json_fields"
+            name="developerProgress.csv"
+            type="csv"
+            :style="
+              $v.$invalid
+                ? 'pointer-events:none;cursor: no-drop;'
+                : 'pointer-events:auto;'
+            "
+            >Download Report</JsonExcel
           >
         </v-card-actions>
       </v-card>
@@ -94,8 +107,15 @@
 
 <script>
 import { required, maxLength } from "vuelidate/lib/validators";
+import JsonExcel from "vue-json-excel";
 
 export default {
+  components: {
+    JsonExcel,
+  },
+  mounted() {
+    this.getProjects();
+  },
   validations() {
     return {
       startDate: { required },
@@ -128,41 +148,83 @@ export default {
         { text: "QA", value: "QA" },
       ],
       environment: "",
-        items: [
-      { text: "Blocker" },
-      { text: "Critical" },
-      { text: "Major" },
-      { text: "Minor" },
-      { text: "Trivial" },
-      { text: "Enhancement" },
-    ],
+      items: [
+        { text: "Blocker" },
+        { text: "Critical" },
+        { text: "Major" },
+        { text: "Minor" },
+        { text: "Trivial" },
+        { text: "Enhancement" },
+      ],
+      devs: [],
+      managers: [],
+      devsList: [],
+      severity: "",
+      json_fields: {
+        id: "id",
+        priority: "priority",
+        severity: "severity",
+        environment: "environment",
+        resolution: "resolution",
+        existingVersion: "existingVersion",
+        comment: "comment",
+        datePicked: "datePicked",
+        status: "status",
+        fileUrl: "fileUrl",
+        title: "title",
+        project: "project.title",
+        assignee: "assignee",
+        assignedTo: "assignedTo",
+      },
     };
   },
   methods: {
-    async create() {
+    async getProjects() {
       try {
-        console.log("startDate", this.startDate);
-        console.log("endDate", this.endDate);
-        console.log("bugStatus", this.bugStatus);
-
-        const formData = {
-          title: this.title,
-          managerId: this.managerId,
-          leadId: this.leadId,
-          description: this.description,
-          startDate: this.startDate,
-          endDate: this.endDate,
-          fileSrc: this.fileSrc,
-        };
-        this.$refs.project.reset();
-        this.$v.$reset();
-        // await this.$http.post("projects", formData);
-        this.response = "Project created successfully!";
-        this.alertType = "success";
-        this.isAlert = true;
+        const { data } = await this.$http.get("user");
+        this.managers = data.filter((e) => e.role === "qa");
+        this.devs = data.filter((e) => e.role === "dev");
       } catch (error) {
         this.response = "Oops! Something went wrong.";
         this.alertType = "error";
+        this.isAlert = true;
+      }
+    },
+    async create() {
+      try {
+        const formData = {
+          startDate: this.startDate,
+          endDate: this.endDate,
+          devsList: this.devsList,
+          bugStatus: this.bugStatus,
+          environment: this.environment,
+          severity: this.severity,
+          componentType: "developer",
+        };
+        
+        if (this.$v.$invalid) {
+          this.alertType = "error";
+          this.response = "Please fill all the required fields.";
+          this.isAlert = true;
+          return;
+        }
+
+        const data = await this.$http.post("reports/devProgress", formData);
+        if (data.data.length === 0) {
+          this.alertType = "error";
+          this.response = "No data available!";
+          this.isAlert = true;
+          return;
+        }
+
+        return data.data.map((e) => {
+          e.assignee = `${e.assigneeId.first_name} ${e.assigneeId.last_name}`;
+          e.assignedTo = `${e.assignedToId.first_name} ${e.assignedToId.last_name}`;
+          return e;
+        });
+      } catch (error) {
+        this.alertType = "error";
+        this.response = "Some thing went wrong!";
         this.isAlert = true;
       }
     },

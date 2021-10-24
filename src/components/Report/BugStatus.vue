@@ -2,7 +2,7 @@
   <v-layout row>
     <v-flex>
       <v-card>
-        <v-card-title>Developer progress report</v-card-title>
+        <v-card-title> Bug status report </v-card-title>
         <v-card-text>
           <v-form ref="project">
             <v-layout row>
@@ -32,18 +32,7 @@
                   </v-flex>
                 </v-layout>
               </v-flex>
-              <v-flex xs12 sm12 md3>
-                <v-select
-                  label="Developer"
-                  :items="bugStatusList"
-                  item-text="fullName"
-                  item-value="id"
-                  v-model="bugStatus"
-                  multiple
-                  outlined
-                ></v-select>
-              </v-flex>
-              <v-flex xs12 sm12 md3>
+              <v-flex xs12 sm12 md12>
                 <v-select
                   label="Bug status"
                   :items="bugStatusList"
@@ -54,32 +43,25 @@
                   outlined
                 ></v-select>
               </v-flex>
-              <v-flex xs12 sm12 md3>
-                <v-select
-                  label="Environment"
-                  :items="envs"
-                  item-text="text"
-                  item-value="text"
-                  v-model="environment"
-                  outlined
-                ></v-select>
-              </v-flex>
-               <v-flex xs12 sm12 md3>
-                <v-select
-                  label="Severity"
-                  :items="items"
-                  item-text="text"
-                  item-value="text"
-                  v-model="severity"
-                  outlined
-                ></v-select>
-              </v-flex>
             </v-layout>
           </v-form>
         </v-card-text>
         <v-card-actions>
-          <v-btn class="success" :disabled="$v.$invalid" @click="create"
+          <!-- <v-btn class="success" :disabled="$v.$invalid" @click="create"
             >generate</v-btn
+          > -->
+          <JsonExcel
+            class="btn"
+            :fetch="create"
+            :fields="json_fields"
+            name="bugStatus.csv"
+            type="csv"
+            :style="
+              $v.$invalid
+                ? 'pointer-events:none;cursor: no-drop;'
+                : 'pointer-events:auto;'
+            "
+            >Download Report</JsonExcel
           >
         </v-card-actions>
       </v-card>
@@ -94,8 +76,12 @@
 
 <script>
 import { required, maxLength } from "vuelidate/lib/validators";
+import JsonExcel from "vue-json-excel";
 
 export default {
+  components: {
+    JsonExcel,
+  },
   validations() {
     return {
       startDate: { required },
@@ -122,48 +108,59 @@ export default {
         "Done",
         "Canceled",
       ],
-      envs: [
-        { text: "Production", value: "Production" },
-        { text: "Staging", value: "Staging" },
-        { text: "QA", value: "QA" },
-      ],
-      environment: "",
-        items: [
-      { text: "Blocker" },
-      { text: "Critical" },
-      { text: "Major" },
-      { text: "Minor" },
-      { text: "Trivial" },
-      { text: "Enhancement" },
-    ],
+      json_fields: {
+        id: "id",
+        priority: "priority",
+
+        severity: "severity",
+
+        environment: "environment",
+
+        resolution: "resolution",
+        existingVersion: "existingVersion",
+        comment: "comment",
+
+        status: "status",
+        fileUrl: "fileUrl",
+        title: "title",
+        project: "project.title",
+        assignee: "assignee",
+        assignedTo: "assignedTo",
+      },
     };
   },
   methods: {
     async create() {
       try {
-        console.log("startDate", this.startDate);
-        console.log("endDate", this.endDate);
-        console.log("bugStatus", this.bugStatus);
-
         const formData = {
-          title: this.title,
-          managerId: this.managerId,
-          leadId: this.leadId,
-          description: this.description,
           startDate: this.startDate,
           endDate: this.endDate,
-          fileSrc: this.fileSrc,
+          bugStatus: this.bugStatus,
         };
-        this.$refs.project.reset();
-        this.$v.$reset();
-        // await this.$http.post("projects", formData);
-        this.response = "Project created successfully!";
-        this.alertType = "success";
-        this.isAlert = true;
+        if (this.$v.$invalid) {
+          this.alertType = "error";
+          this.alert = "Please fill all the required fields.";
+          this.hasAlert = true;
+          return;
+        }
+
+        const data = await this.$http.post("reports/bugStatus", formData);
+        if (data.data.length === 0) {
+          this.alertType = "error";
+          this.alert = "No data available!";
+          this.hasAlert = true;
+          return;
+        }
+
+        return data.data.map((e) => {
+          e.assignee = `${e.assigneeId.first_name} ${e.assigneeId.last_name}`;
+          e.assignedTo = `${e.assignedToId.first_name} ${e.assignedToId.last_name}`;
+          return e;
+        });
       } catch (error) {
-        this.response = "Oops! Something went wrong.";
         this.alertType = "error";
-        this.isAlert = true;
+        this.alert = "Some thing went wrong!";
+        this.hasAlert = true;
       }
     },
   },

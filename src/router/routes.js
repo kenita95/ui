@@ -40,7 +40,7 @@ import View_status from "../components/bugs/View-status.vue";
 
 
 //project reports
-import Bug_Progress from "../components/Report/BugProgress.vue";
+import Bug_Progress from "../components/Report/BugStatus.vue";
 import Developer_Progress from "../components/Report/DeveloperProgress.vue";
 import Monthly_Progress from "../components/Report/MonthlyProgress.vue";
 import SQA_Progress from "../components/Report/SQAProgress.vue";

@@ -30,26 +30,26 @@ const admin = [
       //   path: "/Edit-Bugs",
       // },
       //{
-       // title: "Delete Bugs",
-       // path: "/Delete-bugs",
-     // },
+      // title: "Delete Bugs",
+      // path: "/Delete-bugs",
+      // },
       {
         title: "Create Project",
         path: "/create-project",
       },
-      
+
       {
         title: "Projects list",
         path: "/projects-list",
       },
-     // {
-     //   title: "Delete Project",
-     //   path: "/Delete-project",
+      // {
+      //   title: "Delete Project",
+      //   path: "/Delete-project",
       //},
-     // {
+      // {
       //  title: "Delete Status",
-       // path: "/Delete-status",
-     // },
+      // path: "/Delete-status",
+      // },
       {
         title: "Create labels",
         path: "/create-label",
@@ -58,28 +58,22 @@ const admin = [
         title: "Labels list",
         path: "/labels-list",
       },
-      
-     //{
+
+      //{
       // title: "Update Comment",
-       // path: "/Update-comment",
-     // },
+      // path: "/Update-comment",
+      // },
       //{
-       // title: "Delete Comment",
-       // path: "/Delete-comment",
+      // title: "Delete Comment",
+      // path: "/Delete-comment",
       //},
       //{
-       // title: "View Comment",
-       // path: "/View-comment",
+      // title: "View Comment",
+      // path: "/View-comment",
       //},
-     
-      
     ],
-    
   },
-  
-  
-  
- 
+
   {
     action: "library_books",
     title: "Report",
@@ -100,28 +94,20 @@ const admin = [
         title: "SQAProgress ",
         path: "/SQAProgress",
       },
+      {
+        title: "Bugs by project ",
+        path: "/projectWise",
+      },
+      {
+        title: "User report",
+        path: "/userReport",
+      },
     ],
   },
-  
 ];
 
-const manager = [
+const manager = [];
 
-  
-  
-  
-  
-  
-  
-];
-
-const staff = [
-  
-  
-  
-  
-  
-
-];
+const staff = [];
 
 export { staff, manager, admin };

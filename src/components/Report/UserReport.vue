@@ -2,7 +2,7 @@
   <v-layout row>
     <v-flex>
       <v-card>
-        <v-card-title>Bug progress report for each project</v-card-title>
+        <v-card-title>User report</v-card-title>
         <v-card-text>
           <v-form ref="project">
             <v-layout row>
@@ -32,44 +32,29 @@
                   </v-flex>
                 </v-layout>
               </v-flex>
-              <v-flex xs12 sm12 md3>
+              <v-flex xs12 sm6 md6>
                 <v-select
-                  label="Project"
-                  :items="projects"
-                  item-text="title"
-                  item-value="id"
-                  v-model="projectId"
+                  class="required"
+                  :items="roles"
+                  item-text="text"
+                  item-value="value"
+                  label="Role"
+                  v-model="role"
+                  filled
+                  required
                   outlined
-                ></v-select>
-              </v-flex>
-              <v-flex xs12 sm12 md3>
-                <v-select
-                  label="Bug status"
-                  :items="bugStatusList"
-                  item-text="fullName"
-                  item-value="id"
-                  v-model="bugStatus"
                   multiple
-                  outlined
-                ></v-select>
+                >
+                </v-select>
               </v-flex>
-              <v-flex xs12 sm12 md3>
+              <v-flex xs12 sm12 md6>
                 <v-select
-                  label="Environment"
-                  :items="envs"
+                  label="Status"
+                  :items="userStatusList"
                   item-text="text"
-                  item-value="text"
-                  v-model="environment"
-                  outlined
-                ></v-select>
-              </v-flex>
-              <v-flex xs12 sm12 md3>
-                <v-select
-                  label="Severity"
-                  :items="items"
-                  item-text="text"
-                  item-value="text"
-                  v-model="severity"
+                  item-value="value"
+                  v-model="userStatus"
+                  multiple
                   outlined
                 ></v-select>
               </v-flex>
@@ -84,7 +69,7 @@
             class="btn"
             :fetch="create"
             :fields="json_fields"
-            name="bugsProgressByProject.csv"
+            name="userReport.csv"
             type="csv"
             :style="
               $v.$invalid
@@ -109,29 +94,25 @@ import { required, maxLength } from "vuelidate/lib/validators";
 import JsonExcel from "vue-json-excel";
 
 export default {
-  mounted() {
-    this.getProjects();
-  },
   components: {
     JsonExcel,
+  },
+  mounted() {
+    this.getProjects();
   },
   validations() {
     return {
       startDate: { required },
       endDate: { required },
-      bugStatus: { required },
-      environment: { required },
-      projectId: { required },
-      severity: { required },
+      userStatus: { required },
     };
   },
 
   data() {
     return {
-      projects: [],
       startDate: "",
       endDate: "",
-      bugStatus: [],
+      userStatus: [],
       isAlert: false,
       response: "",
       alertType: "success",
@@ -145,10 +126,9 @@ export default {
         "Done",
         "Canceled",
       ],
-      envs: [
-        { text: "Production", value: "Production" },
-        { text: "Staging", value: "Staging" },
-        { text: "QA", value: "QA" },
+      userStatusList: [
+        { text: "Active", value: true },
+        { text: "In-active", value: false },
       ],
       environment: "",
       items: [
@@ -159,37 +139,56 @@ export default {
         { text: "Trivial" },
         { text: "Enhancement" },
       ],
-      projectId: "",
+      devs: [],
+      managers: [],
+      devsList: [],
       severity: "",
+      role: [],
+      roles: [
+        { text: "Admin", value: "admin" },
+        { text: "QA", value: "qa" },
+        { text: "Project Manager", value: "manager" },
+        { text: "Developer", value: "dev" },
+        { text: "Product Owner", value: "owner" },
+      ],
       json_fields: {
         id: "id",
-        priority: "priority",
-        severity: "severity",
-        environment: "environment",
-        resolution: "resolution",
-        existingVersion: "existingVersion",
-        comment: "comment",
-        datePicked: "datePicked",
+        fullName: "fullName",
+
+        role: "role",
+
+        email: "email",
+        contact_number: "contact_number",
+        notes: "notes",
+
+        emergency_contact_person: "emergency_contact_person",
+        emergency_contact_number: "emergency_contact_number",
         status: "status",
-        fileUrl: "fileUrl",
-        title: "title",
-        project: "project.title",
-        assignee: "assignee",
-        assignedTo: "assignedTo",
+
+        createdAt: "createdAt",
+        updatedAt: "updatedAt",
       },
     };
   },
   methods: {
+    async getProjects() {
+      try {
+        const { data } = await this.$http.get("user");
+        this.devs = data.filter((e) => e.role === "qa");
+        // this.devs = data.filter((e) => e.role === "dev");
+      } catch (error) {
+        this.response = "Oops! Something went wrong.";
+        this.alertType = "error";
+        this.isAlert = true;
+      }
+    },
     async create() {
       try {
         const formData = {
           startDate: this.startDate,
           endDate: this.endDate,
-          bugStatus: this.bugStatus,
-          projectId: this.projectId,
-          severity: this.severity,
-          environment: this.environment,
-          // fileSrc: this.fileSrc,
+          userRoles: this.role,
+          userStatus: this.userStatus,
         };
 
         if (this.$v.$invalid) {
@@ -199,37 +198,24 @@ export default {
           return;
         }
 
-        // this.$refs.project.reset();
-        // this.$v.$reset();
-        const data = await this.$http.post("reports/bugsByProject", formData);
-        if (data.data.length === 0) {
+        const {data} = await this.$http.post("reports/userReport", formData);
+        if (data.length === 0) {
           this.alertType = "error";
           this.response = "No data available!";
           this.isAlert = true;
           return;
         }
+        return data;
 
-        return data.data.map((e) => {
-          e.assignee = `${e.assigneeId.first_name} ${e.assigneeId.last_name}`;
-          e.assignedTo = `${e.assignedToId.first_name} ${e.assignedToId.last_name}`;
-          return e;
-        });
-        // this.response = "Project created successfully!";
-        // this.alertType = "success";
-        // this.isAlert = true;
+        // return data.data.map((e) => {
+        //   e.assignee = `${e.assigneeId.first_name} ${e.assigneeId.last_name}`;
+        //   e.assignedTo = `${e.assignedToId.first_name} ${e.assignedToId.last_name}`;
+        //   return e;
+        // });
       } catch (error) {
-        this.response = "Oops! Something went wrong.";
+        console.log(error)
         this.alertType = "error";
-        this.isAlert = true;
-      }
-    },
-    async getProjects() {
-      try {
-        const projects = await this.$http.get("projects");
-        this.projects = projects.data.filter((e) => e.status === true);
-      } catch (error) {
-        this.response = "Oops! Something went wrong.";
-        this.alertType = "error";
+        this.response = "Some thing went wrong!";
         this.isAlert = true;
       }
     },

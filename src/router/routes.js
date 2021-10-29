@@ -43,6 +43,7 @@ import Monthly_Progress from "../components/Report/MonthlyProgress.vue";
 import SQA_Progress from "../components/Report/SQAProgress.vue";
 import projectWise from "../components/Report/ProjectWise.vue";
 import userReport from "../components/Report/UserReport.vue";
+import bugsSummary from "../components/Report/bugSummary.vue";
 
 //labels
 import createLabel from "../components/labels/create-label.vue";
@@ -232,6 +233,12 @@ const routes = [
     path: "/userReport",
     component: userReport,
     name: "User report",
+    meta: { requiresAuth: true, tag: "Report" },
+  },
+  {
+    path: "/bugsSummary",
+    component: bugsSummary,
+    name: "Bugs summary report",
     meta: { requiresAuth: true, tag: "Report" },
   },
 ];

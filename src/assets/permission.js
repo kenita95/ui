@@ -102,6 +102,10 @@ const admin = [
         title: "User report",
         path: "/userReport",
       },
+      {
+        title: "Bugs summary report",
+        path: "/bugsSummary",
+      },
     ],
   },
 ];

@@ -2,7 +2,7 @@
   <v-layout row>
     <v-flex>
       <v-card>
-        <v-card-title>SQA progress report</v-card-title>
+        <v-card-title>Bug progress report for each project</v-card-title>
         <v-card-text>
           <v-form ref="project">
             <v-layout row>
@@ -34,12 +34,11 @@
               </v-flex>
               <v-flex xs12 sm12 md3>
                 <v-select
-                  label="QA"
-                  :items="devs"
-                  item-text="fullName"
+                  label="Project"
+                  :items="projects"
+                  item-text="title"
                   item-value="id"
-                  v-model="devsList"
-                  multiple
+                  v-model="projectId"
                   outlined
                 ></v-select>
               </v-flex>
@@ -85,7 +84,7 @@
             class="btn"
             :fetch="create"
             :fields="json_fields"
-            name="developerProgress.csv"
+            name="bugsProgressByProject.csv"
             type="csv"
             :style="
               $v.$invalid
@@ -110,22 +109,26 @@ import { required, maxLength } from "vuelidate/lib/validators";
 import JsonExcel from "vue-json-excel";
 
 export default {
-  components: {
-    JsonExcel,
-  },
   mounted() {
     this.getProjects();
+  },
+  components: {
+    JsonExcel,
   },
   validations() {
     return {
       startDate: { required },
       endDate: { required },
       bugStatus: { required },
+      environment: { required },
+      projectId: { required },
+      severity: { required },
     };
   },
 
   data() {
     return {
+      projects: [],
       startDate: "",
       endDate: "",
       bugStatus: [],
@@ -156,9 +159,7 @@ export default {
         { text: "Trivial" },
         { text: "Enhancement" },
       ],
-      devs: [],
-      managers: [],
-      devsList: [],
+      projectId: "",
       severity: "",
       json_fields: {
         id: "id",
@@ -179,29 +180,18 @@ export default {
     };
   },
   methods: {
-    async getProjects() {
-      try {
-        const { data } = await this.$http.get("user");
-        this.devs = data.filter((e) => e.role === "qa");
-        // this.devs = data.filter((e) => e.role === "dev");
-      } catch (error) {
-        this.response = "Oops! Something went wrong.";
-        this.alertType = "error";
-        this.isAlert = true;
-      }
-    },
     async create() {
       try {
         const formData = {
           startDate: this.startDate,
           endDate: this.endDate,
-          devsList: this.devsList,
           bugStatus: this.bugStatus,
-          environment: this.environment,
+          projectId: this.projectId,
           severity: this.severity,
-        //   componentType: "developer",
+          environment: this.environment,
+          // fileSrc: this.fileSrc,
         };
-        
+
         if (this.$v.$invalid) {
           this.alertType = "error";
           this.response = "Please fill all the required fields.";
@@ -209,7 +199,9 @@ export default {
           return;
         }
 
-        const data = await this.$http.post("reports/devProgress", formData);
+        // this.$refs.project.reset();
+        // this.$v.$reset();
+        const data = await this.$http.post("reports/bugsByProject", formData);
         if (data.data.length === 0) {
           this.alertType = "error";
           this.response = "No data available!";
@@ -222,9 +214,22 @@ export default {
           e.assignedTo = `${e.assignedToId.first_name} ${e.assignedToId.last_name}`;
           return e;
         });
+        // this.response = "Project created successfully!";
+        // this.alertType = "success";
+        // this.isAlert = true;
       } catch (error) {
+        this.response = "Oops! Something went wrong.";
         this.alertType = "error";
-        this.response = "Some thing went wrong!";
+        this.isAlert = true;
+      }
+    },
+    async getProjects() {
+      try {
+        const projects = await this.$http.get("projects");
+        this.projects = projects.data.filter((e) => e.status === true);
+      } catch (error) {
+        this.response = "Oops! Something went wrong.";
+        this.alertType = "error";
         this.isAlert = true;
       }
     },

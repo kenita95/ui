@@ -346,7 +346,6 @@ export default {
     return {
       selectedRoutes: [],
       routes: [],
-      role: "qa",
       title: true,
       first_name: "",
       last_name: "",
@@ -360,6 +359,7 @@ export default {
         { text: "Mr", id: true },
         { text: "Ms", id: false },
       ],
+        role: "qa",
       roles: [
         { text: "Admin", value: "admin" },
         { text: "QA", value: "qa" },

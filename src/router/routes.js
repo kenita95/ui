@@ -10,7 +10,7 @@ import greetings from "../components/greetings.vue";
 
 import user from "../components/staff/user.vue";
 import usersList from "../components/staff/usersList.vue";
-import viewUser from "../components/staff/viewStaff.vue"
+import viewUser from "../components/staff/viewStaff.vue";
 
 import settings from "../components/settings.vue";
 
@@ -25,8 +25,6 @@ import create_project from "../components/bugs/create-project.vue";
 import Modify_project from "../components/bugs/Modify-project.vue";
 import Delete_project from "../components/bugs/Delete-project.vue";
 
-
-
 //project comment-Blog
 
 import Update_comment from "../components/bugs/Update-comment.vue";
@@ -38,17 +36,18 @@ import Delete_status from "../components/bugs/Delete-status.vue";
 import Edit_status from "../components/bugs/Edit-status.vue";
 import View_status from "../components/bugs/View-status.vue";
 
-
 //project reports
-import Bug_Progress from "../components/Report/BugProgress.vue";
+import Bug_Progress from "../components/Report/BugStatus.vue";
 import Developer_Progress from "../components/Report/DeveloperProgress.vue";
 import Monthly_Progress from "../components/Report/MonthlyProgress.vue";
 import SQA_Progress from "../components/Report/SQAProgress.vue";
+import projectWise from "../components/Report/ProjectWise.vue";
+import userReport from "../components/Report/UserReport.vue";
+import bugsSummary from "../components/Report/bugSummary.vue";
 
 //labels
 import createLabel from "../components/labels/create-label.vue";
 import labelsList from "../components/labels/labels-list.vue";
-
 
 const routes = [
   {
@@ -88,8 +87,6 @@ const routes = [
     meta: { requiresAuth: true, tag: "User" },
   },
 
-  
-
   {
     path: "/create-bug",
     component: createBug,
@@ -115,16 +112,13 @@ const routes = [
     meta: { requiresAuth: true, tag: "Bug" },
   },
 
-  
-
- // {
-    //path: "/settings",
-    //component: settings,
-    //name: "Settings",
-    //meta: { requiresAuth: true, tag: "Settings" },
-   // ignore: true,
+  // {
+  //path: "/settings",
+  //component: settings,
+  //name: "Settings",
+  //meta: { requiresAuth: true, tag: "Settings" },
+  // ignore: true,
   //},
-
 
   {
     path: "/create-project",
@@ -162,14 +156,13 @@ const routes = [
     name: "Labels list",
     meta: { requiresAuth: true, tag: "bugs" },
   },
- {
+  {
     path: "/Delete-project",
     component: Delete_project,
     name: "Delete project",
     meta: { requiresAuth: true, tag: "bugs" },
- },
-  
-  
+  },
+
   {
     path: "/Delete-comment",
     component: Delete_comment,
@@ -228,6 +221,24 @@ const routes = [
     path: "/SQAProgress",
     component: SQA_Progress,
     name: "SQA Progress",
+    meta: { requiresAuth: true, tag: "Report" },
+  },
+  {
+    path: "/projectWise",
+    component: projectWise,
+    name: "Bugs by project",
+    meta: { requiresAuth: true, tag: "Report" },
+  },
+  {
+    path: "/userReport",
+    component: userReport,
+    name: "User report",
+    meta: { requiresAuth: true, tag: "Report" },
+  },
+  {
+    path: "/bugsSummary",
+    component: bugsSummary,
+    name: "Bugs summary report",
     meta: { requiresAuth: true, tag: "Report" },
   },
 ];

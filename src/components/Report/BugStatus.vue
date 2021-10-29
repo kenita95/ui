@@ -2,7 +2,7 @@
   <v-layout row>
     <v-flex>
       <v-card>
-        <v-card-title>SQA progress report</v-card-title>
+        <v-card-title> Bug status report </v-card-title>
         <v-card-text>
           <v-form ref="project">
             <v-layout row>
@@ -32,18 +32,7 @@
                   </v-flex>
                 </v-layout>
               </v-flex>
-              <v-flex xs12 sm12 md3>
-                <v-select
-                  label="QA"
-                  :items="devs"
-                  item-text="fullName"
-                  item-value="id"
-                  v-model="devsList"
-                  multiple
-                  outlined
-                ></v-select>
-              </v-flex>
-              <v-flex xs12 sm12 md3>
+              <v-flex xs12 sm12 md12>
                 <v-select
                   label="Bug status"
                   :items="bugStatusList"
@@ -51,26 +40,6 @@
                   item-value="id"
                   v-model="bugStatus"
                   multiple
-                  outlined
-                ></v-select>
-              </v-flex>
-              <v-flex xs12 sm12 md3>
-                <v-select
-                  label="Environment"
-                  :items="envs"
-                  item-text="text"
-                  item-value="text"
-                  v-model="environment"
-                  outlined
-                ></v-select>
-              </v-flex>
-              <v-flex xs12 sm12 md3>
-                <v-select
-                  label="Severity"
-                  :items="items"
-                  item-text="text"
-                  item-value="text"
-                  v-model="severity"
                   outlined
                 ></v-select>
               </v-flex>
@@ -85,7 +54,7 @@
             class="btn"
             :fetch="create"
             :fields="json_fields"
-            name="developerProgress.csv"
+            name="bugStatus.csv"
             type="csv"
             :style="
               $v.$invalid
@@ -113,9 +82,6 @@ export default {
   components: {
     JsonExcel,
   },
-  mounted() {
-    this.getProjects();
-  },
   validations() {
     return {
       startDate: { required },
@@ -128,10 +94,10 @@ export default {
     return {
       startDate: "",
       endDate: "",
-      bugStatus: [],
       isAlert: false,
       response: "",
       alertType: "success",
+      bugStatus: [],
       bugStatusList: [
         "Open",
         "In-progress",
@@ -142,33 +108,23 @@ export default {
         "Done",
         "Canceled",
       ],
-      envs: [
+       envs: [
         { text: "Production", value: "Production" },
         { text: "Staging", value: "Staging" },
         { text: "QA", value: "QA" },
       ],
-      environment: "",
-      items: [
-        { text: "Blocker" },
-        { text: "Critical" },
-        { text: "Major" },
-        { text: "Minor" },
-        { text: "Trivial" },
-        { text: "Enhancement" },
-      ],
-      devs: [],
-      managers: [],
-      devsList: [],
-      severity: "",
       json_fields: {
         id: "id",
         priority: "priority",
+
         severity: "severity",
+
         environment: "environment",
+
         resolution: "resolution",
         existingVersion: "existingVersion",
         comment: "comment",
-        datePicked: "datePicked",
+
         status: "status",
         fileUrl: "fileUrl",
         title: "title",
@@ -179,41 +135,25 @@ export default {
     };
   },
   methods: {
-    async getProjects() {
-      try {
-        const { data } = await this.$http.get("user");
-        this.devs = data.filter((e) => e.role === "qa");
-        // this.devs = data.filter((e) => e.role === "dev");
-      } catch (error) {
-        this.response = "Oops! Something went wrong.";
-        this.alertType = "error";
-        this.isAlert = true;
-      }
-    },
     async create() {
       try {
         const formData = {
           startDate: this.startDate,
           endDate: this.endDate,
-          devsList: this.devsList,
           bugStatus: this.bugStatus,
-          environment: this.environment,
-          severity: this.severity,
-        //   componentType: "developer",
         };
-        
         if (this.$v.$invalid) {
           this.alertType = "error";
-          this.response = "Please fill all the required fields.";
-          this.isAlert = true;
+          this.alert = "Please fill all the required fields.";
+          this.hasAlert = true;
           return;
         }
 
-        const data = await this.$http.post("reports/devProgress", formData);
+        const data = await this.$http.post("reports/bugStatus", formData);
         if (data.data.length === 0) {
           this.alertType = "error";
-          this.response = "No data available!";
-          this.isAlert = true;
+          this.alert = "No data available!";
+          this.hasAlert = true;
           return;
         }
 
@@ -224,8 +164,8 @@ export default {
         });
       } catch (error) {
         this.alertType = "error";
-        this.response = "Some thing went wrong!";
-        this.isAlert = true;
+        this.alert = "Some thing went wrong!";
+        this.hasAlert = true;
       }
     },
   },

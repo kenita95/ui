@@ -2,7 +2,7 @@
   <v-layout row>
     <v-flex>
       <v-card>
-        <v-card-title>SQA progress report</v-card-title>
+        <v-card-title>Bug summary report</v-card-title>
         <v-card-text>
           <v-form ref="project">
             <v-layout row>
@@ -32,18 +32,32 @@
                   </v-flex>
                 </v-layout>
               </v-flex>
-              <v-flex xs12 sm12 md3>
+              <v-flex xs12 sm6 md6>
                 <v-select
-                  label="QA"
-                  :items="devs"
-                  item-text="fullName"
-                  item-value="id"
-                  v-model="devsList"
+                  class="required"
+                  :items="roles"
+                  item-text="text"
+                  item-value="value"
+                  label="Role"
+                  v-model="role"
+                  filled
+                  required
+                  outlined
                   multiple
+                >
+                </v-select>
+              </v-flex>
+              <v-flex xs12 sm12 md6>
+                <v-select
+                  label="Project"
+                  :items="projects"
+                  item-text="title"
+                  item-value="id"
+                  v-model="projectId"
                   outlined
                 ></v-select>
               </v-flex>
-              <v-flex xs12 sm12 md3>
+              <v-flex xs12 sm12 md6>
                 <v-select
                   label="Bug status"
                   :items="bugStatusList"
@@ -54,7 +68,7 @@
                   outlined
                 ></v-select>
               </v-flex>
-              <v-flex xs12 sm12 md3>
+              <v-flex xs12 sm12 md6>
                 <v-select
                   label="Environment"
                   :items="envs"
@@ -64,7 +78,7 @@
                   outlined
                 ></v-select>
               </v-flex>
-              <v-flex xs12 sm12 md3>
+              <v-flex xs12 sm12 md6>
                 <v-select
                   label="Severity"
                   :items="items"
@@ -85,7 +99,7 @@
             class="btn"
             :fetch="create"
             :fields="json_fields"
-            name="developerProgress.csv"
+            name="userReport.csv"
             type="csv"
             :style="
               $v.$invalid
@@ -120,18 +134,30 @@ export default {
     return {
       startDate: { required },
       endDate: { required },
+      // userStatus: { required },
+      roles: { required },
+      projectId: { required },
       bugStatus: { required },
+      environment: { required },
+      severity: { required },
     };
   },
 
   data() {
     return {
+      envs: [
+        { text: "Production", value: "Production" },
+        { text: "Staging", value: "Staging" },
+        { text: "QA", value: "QA" },
+      ],
       startDate: "",
       endDate: "",
-      bugStatus: [],
+      userStatus: [],
       isAlert: false,
       response: "",
       alertType: "success",
+      bugStatus: [],
+
       bugStatusList: [
         "Open",
         "In-progress",
@@ -142,10 +168,9 @@ export default {
         "Done",
         "Canceled",
       ],
-      envs: [
-        { text: "Production", value: "Production" },
-        { text: "Staging", value: "Staging" },
-        { text: "QA", value: "QA" },
+      userStatusList: [
+        { text: "Active", value: true },
+        { text: "In-active", value: false },
       ],
       environment: "",
       items: [
@@ -160,15 +185,26 @@ export default {
       managers: [],
       devsList: [],
       severity: "",
+      role: [],
+      roles: [
+        { text: "Admin", value: "admin" },
+        { text: "QA", value: "qa" },
+        { text: "Project Manager", value: "manager" },
+        { text: "Developer", value: "dev" },
+        { text: "Product Owner", value: "owner" },
+      ],
       json_fields: {
         id: "id",
         priority: "priority",
+
         severity: "severity",
+
         environment: "environment",
+
         resolution: "resolution",
         existingVersion: "existingVersion",
         comment: "comment",
-        datePicked: "datePicked",
+
         status: "status",
         fileUrl: "fileUrl",
         title: "title",
@@ -176,6 +212,8 @@ export default {
         assignee: "assignee",
         assignedTo: "assignedTo",
       },
+      projects: [],
+      projectId: [],
     };
   },
   methods: {
@@ -183,6 +221,8 @@ export default {
       try {
         const { data } = await this.$http.get("user");
         this.devs = data.filter((e) => e.role === "qa");
+        const projects = await this.$http.get("projects");
+        this.projects = projects.data.filter((e) => e.status === true);
         // this.devs = data.filter((e) => e.role === "dev");
       } catch (error) {
         this.response = "Oops! Something went wrong.";
@@ -195,13 +235,13 @@ export default {
         const formData = {
           startDate: this.startDate,
           endDate: this.endDate,
-          devsList: this.devsList,
+          roles: this.roles,
+          projectId: this.projectId,
           bugStatus: this.bugStatus,
           environment: this.environment,
           severity: this.severity,
-        //   componentType: "developer",
         };
-        
+
         if (this.$v.$invalid) {
           this.alertType = "error";
           this.response = "Please fill all the required fields.";
@@ -209,13 +249,14 @@ export default {
           return;
         }
 
-        const data = await this.$http.post("reports/devProgress", formData);
-        if (data.data.length === 0) {
+        const { data } = await this.$http.post("reports/bugSummary", formData);
+        if (data.length === 0) {
           this.alertType = "error";
           this.response = "No data available!";
           this.isAlert = true;
           return;
         }
+        return data;
 
         return data.data.map((e) => {
           e.assignee = `${e.assigneeId.first_name} ${e.assigneeId.last_name}`;
@@ -223,6 +264,7 @@ export default {
           return e;
         });
       } catch (error) {
+        console.log(error);
         this.alertType = "error";
         this.response = "Some thing went wrong!";
         this.isAlert = true;

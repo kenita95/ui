@@ -15,6 +15,7 @@
     "moment": "^2.24.0",
     "pdfmake": "^0.1.64",
     "vue": "^2.6.12",
+    "vue-json-excel": "^0.3.0",
     "vue-router": "^3.0.3",
     "vuelidate": "^0.7.5",
     "vuetify": "^2.0.0",

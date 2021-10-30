@@ -2,7 +2,7 @@
   <v-layout row>
     <v-flex>
       <v-card>
-        <v-card-title> Bug status report </v-card-title>
+        <v-card-title> BUG STATUS REPORT </v-card-title>
         <v-card-text>
           <v-form ref="project">
             <v-layout row>

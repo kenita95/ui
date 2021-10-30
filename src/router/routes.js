@@ -202,37 +202,37 @@ const routes = [
   {
     path: "/BugProgress",
     component: Bug_Progress,
-    name: "Bug Progress",
+    name: "BUG PROGRESS",
     meta: { requiresAuth: true, tag: "Report" },
   },
   {
     path: "/DeveloperProgress",
     component: Developer_Progress,
-    name: "Developer Progress",
+    name: "DEVELOPER PROGRESS",
     meta: { requiresAuth: true, tag: "Report" },
   },
   {
     path: "/MonthlyProgress",
     component: Monthly_Progress,
-    name: "Monthly Progress",
+    name: "MONTHLY PROGRESS",
     meta: { requiresAuth: true, tag: "Report" },
   },
   {
     path: "/SQAProgress",
     component: SQA_Progress,
-    name: "SQA Progress",
+    name: "SQA PROGRESS",
     meta: { requiresAuth: true, tag: "Report" },
   },
   {
     path: "/projectWise",
     component: projectWise,
-    name: "Bugs by project",
+    name: "BUGS BY PROJECT",
     meta: { requiresAuth: true, tag: "Report" },
   },
   {
     path: "/userReport",
     component: userReport,
-    name: "User report",
+    name: "USER REPORT",
     meta: { requiresAuth: true, tag: "Report" },
   },
   {

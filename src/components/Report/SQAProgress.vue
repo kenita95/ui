@@ -2,7 +2,7 @@
   <v-layout row>
     <v-flex>
       <v-card>
-        <v-card-title>SQA progress report</v-card-title>
+        <v-card-title>SQA PROGRESS REPORT </v-card-title>
         <v-card-text>
           <v-form ref="project">
             <v-layout row>

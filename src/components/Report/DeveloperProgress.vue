@@ -2,7 +2,7 @@
   <v-layout row>
     <v-flex>
       <v-card>
-        <v-card-title>Developer progress report</v-card-title>
+        <v-card-title>DEVELOPER PROGRESS REPORT </v-card-title>
         <v-card-text>
           <v-form ref="project">
             <v-layout row>

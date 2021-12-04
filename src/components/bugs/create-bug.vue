@@ -78,13 +78,26 @@
                   v-model="projectId"
                 ></v-select>
               </v-flex>
-              <v-flex xs12 sm12 md6 v-if="role !== 'dev'">
+             
+              <!-- <v-flex xs12 sm12 md6>
+              
+
                 <v-select
                   label="Resolution"
                   :items="resolutions"
                   item-text="text"
                   item-value="value"
                   :disabled="isCreateComponent"
+                  v-model="resolution"
+                ></v-select>
+              </v-flex> -->
+               <v-flex xs12 sm12 md6 v-if="role!=='dev'">
+             
+
+                <v-select
+                  label="Resolutions"
+                  :items="resolutionsL"
+                 
                   v-model="resolution"
                 ></v-select>
               </v-flex>
@@ -215,15 +228,24 @@ export default {
       { text: "Staging", value: "Staging" },
       { text: "QA", value: "QA" },
     ],
-    resolutions: [
-      { text: "Done ", value: "done" },
-      { text: "Fixed", value: "fixed" },
-      { text: "Incomplete", value: "incomplete" },
-      { text: "Can't reproduce", value: "cantReproduce" },
-      { text: "Duplicate", value: "duplicate" },
-      { text: "Won't Do", value: "wontdo" },
+    resolutionsList: [
+      { title: "Done ", id: "done" },
+      { title: "Fixed", id: "fixed" },
+      { title: "Incomplete", id: "incomplete" },
+      // { text: "Can't reproduce", value: "cantReproduce" },
+      // { text: "Duplicate", value: "duplicate" },
+      // { text: "Won't Do", value: "wontdo" },
       ,
-      { text: "Confirmation needed", value: "confirmationNeeded" },
+      // { text: "Confirmation needed", value: "confirmationNeeded" },
+    ],
+     resolutionsL: [
+       "done",
+      "fixed",
+       "incomplete" ,
+      "cantReproduce",
+       "duplicate" ,
+      "wontdo" ,
+      "confirmationNeeded",
     ],
     statusList: [
       "Open",
@@ -247,7 +269,7 @@ export default {
     environment: "",
     labelId: "",
     projectId: "",
-    resolution: "",
+    resolution: "fixed",
     existingVersion: "",
     comment: "",
     datePicked: "",
@@ -341,7 +363,7 @@ export default {
         this.comment = data.comment;
         this.fileUrl = data.fileUrl;
         this.datePicked = data.datePicked;
-        this.resolution = data.resolution;
+        // this.resolution = data.resolution;
         this.status = data.status;
         this.title = data.title;
       } catch (error) {

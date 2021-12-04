@@ -41,6 +41,7 @@
                   item-value="id"
                   v-model="projectId"
                   outlined
+                 
                 ></v-select>
               </v-flex>
               <v-flex xs12 sm12 md6>
@@ -52,6 +53,7 @@
                   v-model="bugStatus"
                   multiple
                   outlined
+                  counter="2"
                 ></v-select>
               </v-flex>
               <v-flex xs12 sm12 md6>
@@ -73,6 +75,30 @@
                   v-model="severity"
                   outlined
                 ></v-select>
+              </v-flex>
+               <v-flex xs12 sm12 md6>
+               
+                <v-select
+                  label="Assign from"
+                  :items="managers"
+                  item-text="fullName"
+                  item-value="id"
+                  v-model="qaList"
+                  multiple
+                  outlined
+                ></v-select>
+              </v-flex>
+                <v-flex xs12 sm12 md6>
+                <v-select
+                  label="Assign to"
+                  :items="devs"
+                  item-text="fullName"
+                  item-value="id"
+                  v-model="devsList"
+                  multiple
+                  outlined
+                ></v-select>
+               
               </v-flex>
             </v-layout>
           </v-form>
@@ -205,13 +231,17 @@ export default {
       },
       projects: [],
       projectId: [],
+      qaList:[]
+
     };
   },
   methods: {
     async getProjects() {
       try {
         const { data } = await this.$http.get("user");
-        this.devs = data.filter((e) => e.role === "qa");
+       this.managers = data.filter((e) => e.role === "qa");
+        this.devs = data.filter((e) => e.role === "dev");
+        
         const projects = await this.$http.get("projects");
         this.projects = projects.data.filter((e) => e.status === true);
         // this.devs = data.filter((e) => e.role === "dev");
@@ -231,6 +261,8 @@ export default {
           bugStatus: this.bugStatus,
           environment: this.environment,
           severity: this.severity,
+          qaList:this.qaList,
+          devsList:this.devsList
         };
 
         if (this.$v.$invalid) {

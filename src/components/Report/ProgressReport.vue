@@ -13,21 +13,25 @@
                   </v-flex>
                   <v-flex xs12 sm12 md6>
                     <p>Start date</p>
+
                     <v-date-picker
                       v-model="startDate"
                       landscape
                       :max="new Date().toISOString()"
+                       
                     >
                     </v-date-picker>
                   </v-flex>
 
                   <v-flex xs12 sm12 md6>
                     <p>End date</p>
+
                     <v-date-picker
                       v-model="endDate"
                       landscape
-                      :max="new Date().toISOString()"
                       :disabled="!startDate ? true : false"
+                      :max="new Date().toISOString()"
+                       
                     ></v-date-picker>
                   </v-flex>
                 </v-layout>
@@ -44,32 +48,22 @@
         </v-card-text>
       </v-card>
     </v-flex>
-    <line-chart :chartdata="chartData" :options="chartOptions" />
+    <v-flex xs12 sm12 md12>
+      <my-chart :chartdata="chartdata" :options="options" v-if="loaded" />
+    </v-flex>
   </v-layout>
 </template>
 
 <script>
 import { required, maxLength } from "vuelidate/lib/validators";
-import { Line } from "vue-chartjs";
+
+import MyChart from "../bugs/MyChart";
 
 export default {
-  extends: Line,
-  data: () => ({
-    chartData: {
-      label: ["January", "February"],
-      datasets: [
-        {
-          label: "Data One",
-          backgroundColor: "#f87979",
-          data: [40, 20],
-        },
-      ],
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-    },
-  }),
+  components: {
+    MyChart,
+  },
+
   validations() {
     return {
       startDate: { required },
@@ -78,13 +72,22 @@ export default {
   },
   data() {
     return {
-      startDate: "",
+      startDate: "2021-11-04",
+      myDate: "",
       endDate: "",
+      loaded: false,
+      chartdata: null,
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+      },
     };
   },
   methods: {
     async create() {
       try {
+        this.chartdata = null;
+        this.loaded = false;
         const formData = {
           startDate: this.startDate,
           endDate: this.endDate,
@@ -95,9 +98,29 @@ export default {
           this.isAlert = true;
           return;
         }
-        const data = await this.$http.post("reports/progressReport", formData);
-        console.log(data);
-        if (data.data.length === 0) {
+        const { data } = await this.$http.post(
+          "reports/progressReport",
+          formData
+        );
+
+        const labels = data.results.map((e) => e.name);
+
+        const datasets2 = [];
+        data.results.forEach((element) => {
+          const avg = element.avg;
+          datasets2.push({
+            label: element.name,
+            data: [avg],
+          });
+        });
+
+        const chartdata = {
+          labels,
+          datasets: datasets2,
+        };
+        this.chartdata = chartdata;
+        this.loaded = true;
+        if (data.length === 0) {
           this.alertType = "error";
           this.response = "No data available!";
           this.isAlert = true;
@@ -110,8 +133,8 @@ export default {
       }
     },
   },
-  mounted() {
-    this.renderChart(this.chartdata, this.options);
-  },
+  // mounted() {
+  //   this.renderChart(this.chartdata, this.options);
+  // },
 };
 </script>

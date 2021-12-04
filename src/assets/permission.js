@@ -112,6 +112,17 @@ const admin = [
       },
     ],
   },
+  {
+    action: 'library_books',
+    title: 'Analysis',
+    items: [
+     
+      {
+        title: 'Developer Progress Chart',
+        path: '/progressReport',
+      },
+    ],
+  },
 ];
 
 const manager = [];

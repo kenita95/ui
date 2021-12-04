@@ -2,7 +2,7 @@
   <v-layout row>
     <v-flex>
       <v-card>
-        <v-card-title>Monthly bug progress report</v-card-title>
+        <v-card-title>MONTHLY BUG PROGRESS REPORT </v-card-title>
         <v-card-text>
           <v-form ref="project">
             <v-layout row>
@@ -159,7 +159,7 @@ export default {
         { text: "Trivial" },
         { text: "Enhancement" },
       ],
-      projectId: "",
+      // projectId: "",
       severity: "",
       json_fields: {
         id: "id",

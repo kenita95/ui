@@ -32,21 +32,7 @@
                   </v-flex>
                 </v-layout>
               </v-flex>
-              <v-flex xs12 sm6 md6>
-                <v-select
-                  class="required"
-                  :items="roles"
-                  item-text="text"
-                  item-value="value"
-                  label="Role"
-                  v-model="role"
-                  filled
-                  required
-                  outlined
-                  multiple
-                >
-                </v-select>
-              </v-flex>
+
               <v-flex xs12 sm12 md6>
                 <v-select
                   label="Project"
@@ -200,11 +186,16 @@ export default {
         severity: "severity",
 
         environment: "environment",
-
+        labelId: "labelId",
+        existingVersion: "existingVersion",
+        detectedDate: "datePicked",
+        createdDate: "createdAt",
+        LastUpdate: "updatedAt",
+        comment: "comment",
         resolution: "resolution",
         existingVersion: "existingVersion",
         comment: "comment",
-
+        description: "description",
         status: "status",
         fileUrl: "fileUrl",
         title: "title",

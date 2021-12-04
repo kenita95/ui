@@ -216,9 +216,14 @@ export default {
       { text: "QA", value: "QA" },
     ],
     resolutions: [
-      { text: "R1", value: "r1" },
-      { text: "R2", value: "r2" },
-      { text: "R3", value: "r3" },
+      { text: "Done ", value: "done" },
+      { text: "Fixed", value: "fixed" },
+      { text: "Incomplete", value: "incomplete" },
+      { text: "Can't reproduce", value: "cantReproduce" },
+      { text: "Duplicate", value: "duplicate" },
+      { text: "Won't Do", value: "wontdo" },
+      ,
+      { text: "Confirmation needed", value: "confirmationNeeded" },
     ],
     statusList: [
       "Open",
@@ -260,8 +265,8 @@ export default {
         const labels = await this.$http.get("projectLabels");
         this.labels = labels.data;
         const projects = await this.$http.get("projects");
-       
-        this.projects = projects.data.filter(e=> e.status === true)
+
+        this.projects = projects.data.filter((e) => e.status === true);
         const { data } = await this.$http.get("user");
         this.managers = data.filter((e) => e.role === "qa");
         this.devs = data.filter((e) => e.role === "dev");
@@ -296,7 +301,6 @@ export default {
         this.alertType = "success";
         this.isAlert = true;
       } catch (error) {
-       
         this.response = "Oops! Something went wrong.";
         this.alertType = "error";
         this.isAlert = true;
@@ -340,7 +344,6 @@ export default {
         this.resolution = data.resolution;
         this.status = data.status;
         this.title = data.title;
-       
       } catch (error) {
         this.response = "Error! While loading the data from API.";
         this.alertType = "error";
@@ -381,4 +384,3 @@ export default {
   },
 };
 </script>
-

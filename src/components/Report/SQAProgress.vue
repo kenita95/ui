@@ -133,6 +133,7 @@ export default {
       response: "",
       alertType: "success",
       bugStatusList: [
+        "All",
         "Open",
         "In-progress",
         "Dev done",
@@ -199,9 +200,9 @@ export default {
           bugStatus: this.bugStatus,
           environment: this.environment,
           severity: this.severity,
-        //   componentType: "developer",
+          //   componentType: "developer",
         };
-        
+
         if (this.$v.$invalid) {
           this.alertType = "error";
           this.response = "Please fill all the required fields.";

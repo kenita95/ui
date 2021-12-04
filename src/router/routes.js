@@ -1,115 +1,116 @@
-import welcome from "../components/welcome.vue";
-import inside from "../components/inside.vue";
-import forgot_password from "../components/forgot-password.vue";
+import welcome from '../components/welcome.vue';
+import inside from '../components/inside.vue';
+import forgot_password from '../components/forgot-password.vue';
 
 // greetings
 
-import greetings from "../components/greetings.vue";
+import greetings from '../components/greetings.vue';
 
 // staff module
 
-import user from "../components/staff/user.vue";
-import usersList from "../components/staff/usersList.vue";
-import viewUser from "../components/staff/viewStaff.vue";
+import user from '../components/staff/user.vue';
+import usersList from '../components/staff/usersList.vue';
+import viewUser from '../components/staff/viewStaff.vue';
 
-import settings from "../components/settings.vue";
+import settings from '../components/settings.vue';
 
 //bugs interfaces
-import createBug from "../components/bugs/create-bug.vue";
-import viewBugs from "../components/bugs/viewBugs.vue";
-import Edit_Bugs from "../components/bugs/Edit-Bugs.vue";
-import Delete_bugs from "../components/bugs/Delete-bugs.vue";
+import createBug from '../components/bugs/create-bug.vue';
+import viewBugs from '../components/bugs/viewBugs.vue';
+import Edit_Bugs from '../components/bugs/Edit-Bugs.vue';
+import Delete_bugs from '../components/bugs/Delete-bugs.vue';
 
 //project interface
-import create_project from "../components/bugs/create-project.vue";
-import Modify_project from "../components/bugs/Modify-project.vue";
-import Delete_project from "../components/bugs/Delete-project.vue";
+import create_project from '../components/bugs/create-project.vue';
+import Modify_project from '../components/bugs/Modify-project.vue';
+import Delete_project from '../components/bugs/Delete-project.vue';
 
 //project comment-Blog
 
-import Update_comment from "../components/bugs/Update-comment.vue";
-import Delete_comment from "../components/bugs/Delete-comment.vue";
-import View_comment from "../components/bugs/View-comment.vue";
+import Update_comment from '../components/bugs/Update-comment.vue';
+import Delete_comment from '../components/bugs/Delete-comment.vue';
+import View_comment from '../components/bugs/View-comment.vue';
 
 //project status
-import Delete_status from "../components/bugs/Delete-status.vue";
-import Edit_status from "../components/bugs/Edit-status.vue";
-import View_status from "../components/bugs/View-status.vue";
+import Delete_status from '../components/bugs/Delete-status.vue';
+import Edit_status from '../components/bugs/Edit-status.vue';
+import View_status from '../components/bugs/View-status.vue';
 
 //project reports
-import Bug_Progress from "../components/Report/BugStatus.vue";
-import Developer_Progress from "../components/Report/DeveloperProgress.vue";
-import Monthly_Progress from "../components/Report/MonthlyProgress.vue";
-import SQA_Progress from "../components/Report/SQAProgress.vue";
-import projectWise from "../components/Report/ProjectWise.vue";
-import userReport from "../components/Report/UserReport.vue";
-import bugsSummary from "../components/Report/bugSummary.vue";
+import Bug_Progress from '../components/Report/BugStatus.vue';
+import Developer_Progress from '../components/Report/DeveloperProgress.vue';
+import Monthly_Progress from '../components/Report/MonthlyProgress.vue';
+import SQA_Progress from '../components/Report/SQAProgress.vue';
+import projectWise from '../components/Report/ProjectWise.vue';
+import userReport from '../components/Report/UserReport.vue';
+import bugsSummary from '../components/Report/bugSummary.vue';
+import chart from '../components/Report/ProgressReport.vue';
 
 //labels
-import createLabel from "../components/labels/create-label.vue";
-import labelsList from "../components/labels/labels-list.vue";
+import createLabel from '../components/labels/create-label.vue';
+import labelsList from '../components/labels/labels-list.vue';
 
 const routes = [
   {
-    path: "/",
+    path: '/',
     component: welcome,
     ignore: true,
   },
 
   {
-    path: "/forgot-password",
+    path: '/forgot-password',
     component: forgot_password,
     ignore: true,
   },
   {
-    path: "/dashboard",
+    path: '/dashboard',
     component: greetings,
-    name: "Greeting screen",
-    meta: { requiresAuth: true, tag: "Greeting" },
+    name: 'Greeting screen',
+    meta: { requiresAuth: true, tag: 'Greeting' },
     ignore: true,
   },
   {
-    path: "/user",
+    path: '/user',
     component: user,
-    name: "Create / update user",
-    meta: { requiresAuth: true, tag: "User" },
+    name: 'Create / update user',
+    meta: { requiresAuth: true, tag: 'User' },
   },
   {
-    path: "/update-staff",
+    path: '/update-staff',
     component: usersList,
-    name: "Users list",
-    meta: { requiresAuth: true, tag: "User" },
+    name: 'Users list',
+    meta: { requiresAuth: true, tag: 'User' },
   },
   {
-    path: "/viewStaff",
+    path: '/viewStaff',
     component: viewUser,
-    name: "View user",
-    meta: { requiresAuth: true, tag: "User" },
+    name: 'View user',
+    meta: { requiresAuth: true, tag: 'User' },
   },
 
   {
-    path: "/create-bug",
+    path: '/create-bug',
     component: createBug,
-    name: "Create / update bug",
-    meta: { requiresAuth: true, tag: "Bug" },
+    name: 'Create / update bug',
+    meta: { requiresAuth: true, tag: 'Bug' },
   },
   {
-    path: "/bugs-list",
+    path: '/bugs-list',
     component: viewBugs,
-    name: "Bugs list",
-    meta: { requiresAuth: true, tag: "Bug" },
+    name: 'Bugs list',
+    meta: { requiresAuth: true, tag: 'Bug' },
   },
   {
-    path: "/Edit-Bugs",
+    path: '/Edit-Bugs',
     component: Edit_Bugs,
-    name: "Edit Bugs",
-    meta: { requiresAuth: true, tag: "Bug" },
+    name: 'Edit Bugs',
+    meta: { requiresAuth: true, tag: 'Bug' },
   },
   {
-    path: "/Delete-bugs",
+    path: '/Delete-bugs',
     component: Delete_bugs,
-    name: "Delete Bugs",
-    meta: { requiresAuth: true, tag: "Bug" },
+    name: 'Delete Bugs',
+    meta: { requiresAuth: true, tag: 'Bug' },
   },
 
   // {
@@ -121,125 +122,131 @@ const routes = [
   //},
 
   {
-    path: "/create-project",
+    path: '/create-project',
     component: create_project,
-    name: "Create project",
-    meta: { requiresAuth: true, tag: "bugs" },
+    name: 'Create project',
+    meta: { requiresAuth: true, tag: 'bugs' },
   },
   {
-    path: "/modify-project",
+    path: '/modify-project',
     component: create_project,
-    name: "Update project",
-    meta: { requiresAuth: true, tag: "bugs" },
+    name: 'Update project',
+    meta: { requiresAuth: true, tag: 'bugs' },
   },
   {
-    path: "/projects-list",
+    path: '/projects-list',
     component: Modify_project,
-    name: "Projects list",
-    meta: { requiresAuth: true, tag: "bugs" },
+    name: 'Projects list',
+    meta: { requiresAuth: true, tag: 'bugs' },
   },
   {
-    path: "/create-label",
+    path: '/create-label',
     component: createLabel,
-    name: "Create labels",
-    meta: { requiresAuth: true, tag: "bugs" },
+    name: 'Create labels',
+    meta: { requiresAuth: true, tag: 'bugs' },
   },
   {
-    path: "/update-label",
+    path: '/update-label',
     component: createLabel,
-    name: "Update labels",
-    meta: { requiresAuth: true, tag: "bugs" },
+    name: 'Update labels',
+    meta: { requiresAuth: true, tag: 'bugs' },
   },
   {
-    path: "/labels-list",
+    path: '/labels-list',
     component: labelsList,
-    name: "Labels list",
-    meta: { requiresAuth: true, tag: "bugs" },
+    name: 'Labels list',
+    meta: { requiresAuth: true, tag: 'bugs' },
   },
   {
-    path: "/Delete-project",
+    path: '/Delete-project',
     component: Delete_project,
-    name: "Delete project",
-    meta: { requiresAuth: true, tag: "bugs" },
+    name: 'Delete project',
+    meta: { requiresAuth: true, tag: 'bugs' },
   },
 
   {
-    path: "/Delete-comment",
+    path: '/Delete-comment',
     component: Delete_comment,
-    name: "Delete comment",
-    meta: { requiresAuth: true, tag: "bugs" },
+    name: 'Delete comment',
+    meta: { requiresAuth: true, tag: 'bugs' },
   },
   {
-    path: "/Update-comment",
+    path: '/Update-comment',
     component: Update_comment,
-    name: "Update comment",
-    meta: { requiresAuth: true, tag: "bugs" },
+    name: 'Update comment',
+    meta: { requiresAuth: true, tag: 'bugs' },
   },
   {
-    path: "/View-comment",
+    path: '/View-comment',
     component: View_comment,
-    name: "View comment",
-    meta: { requiresAuth: true, tag: "bugs" },
+    name: 'View comment',
+    meta: { requiresAuth: true, tag: 'bugs' },
   },
   {
-    path: "/Delete-status",
+    path: '/Delete-status',
     component: Delete_status,
-    name: "Delete status",
-    meta: { requiresAuth: true, tag: "bugs" },
+    name: 'Delete status',
+    meta: { requiresAuth: true, tag: 'bugs' },
   },
   {
-    path: "/Edit-status",
+    path: '/Edit-status',
     component: Edit_status,
-    name: "Edit status",
-    meta: { requiresAuth: true, tag: "bugs" },
+    name: 'Edit status',
+    meta: { requiresAuth: true, tag: 'bugs' },
   },
   {
-    path: "/View-status",
+    path: '/View-status',
     component: View_status,
-    name: "View status",
-    meta: { requiresAuth: true, tag: "bugs" },
+    name: 'View status',
+    meta: { requiresAuth: true, tag: 'bugs' },
   },
   {
-    path: "/BugProgress",
+    path: '/BugProgress',
     component: Bug_Progress,
-    name: "BUG PROGRESS",
-    meta: { requiresAuth: true, tag: "Report" },
+    name: 'BUG PROGRESS',
+    meta: { requiresAuth: true, tag: 'Report' },
   },
   {
-    path: "/DeveloperProgress",
+    path: '/DeveloperProgress',
     component: Developer_Progress,
-    name: "DEVELOPER PROGRESS",
-    meta: { requiresAuth: true, tag: "Report" },
+    name: 'DEVELOPER PROGRESS',
+    meta: { requiresAuth: true, tag: 'Report' },
   },
   {
-    path: "/MonthlyProgress",
+    path: '/MonthlyProgress',
     component: Monthly_Progress,
-    name: "MONTHLY PROGRESS",
-    meta: { requiresAuth: true, tag: "Report" },
+    name: 'MONTHLY PROGRESS',
+    meta: { requiresAuth: true, tag: 'Report' },
   },
   {
-    path: "/SQAProgress",
+    path: '/SQAProgress',
     component: SQA_Progress,
-    name: "SQA PROGRESS",
-    meta: { requiresAuth: true, tag: "Report" },
+    name: 'SQA PROGRESS',
+    meta: { requiresAuth: true, tag: 'Report' },
   },
   {
-    path: "/projectWise",
+    path: '/projectWise',
     component: projectWise,
-    name: "BUGS BY PROJECT",
-    meta: { requiresAuth: true, tag: "Report" },
+    name: 'BUGS BY PROJECT',
+    meta: { requiresAuth: true, tag: 'Report' },
   },
   {
-    path: "/userReport",
+    path: '/userReport',
     component: userReport,
-    name: "USER REPORT",
-    meta: { requiresAuth: true, tag: "Report" },
+    name: 'USER REPORT',
+    meta: { requiresAuth: true, tag: 'Report' },
   },
   {
-    path: "/bugsSummary",
+    path: '/bugsSummary',
     component: bugsSummary,
-    name: "Bugs summary report",
-    meta: { requiresAuth: true, tag: "Report" },
+    name: 'Bugs summary report',
+    meta: { requiresAuth: true, tag: 'Report' },
+  },
+  {
+    path: '/progressReport',
+    component: chart,
+    name: 'Progrss Report',
+    meta: { requiresAuth: true, tag: 'Report' },
   },
 ];
 

@@ -121,7 +121,7 @@ export default {
       endDate: { required },
       bugStatus: { required },
       environment: { required },
-    //   projectId: { required },
+      //   projectId: { required },
       severity: { required },
     };
   },
@@ -136,6 +136,7 @@ export default {
       response: "",
       alertType: "success",
       bugStatusList: [
+        "All",
         "Open",
         "In-progress",
         "Dev done",
@@ -186,7 +187,7 @@ export default {
           startDate: this.startDate,
           endDate: this.endDate,
           bugStatus: this.bugStatus,
-        //   projectId: this.projectId,
+          //   projectId: this.projectId,
           severity: this.severity,
           environment: this.environment,
           // fileSrc: this.fileSrc,

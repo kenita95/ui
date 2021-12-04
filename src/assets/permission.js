@@ -1,29 +1,29 @@
 const admin = [
   {
-    action: "group",
-    title: "User",
+    action: 'group',
+    title: 'User',
     items: [
       {
-        title: "Create an user",
-        path: "/user",
+        title: 'Create an user',
+        path: '/user',
       },
       {
-        title: "Users list",
-        path: "/update-staff",
+        title: 'Users list',
+        path: '/update-staff',
       },
     ],
   },
   {
-    action: "library_books",
-    title: "Bug",
+    action: 'library_books',
+    title: 'Bug',
     items: [
       {
-        title: "Create Bugs",
-        path: "/create-bug",
+        title: 'Create Bugs',
+        path: '/create-bug',
       },
       {
-        title: "Bugs List",
-        path: "/bugs-list",
+        title: 'Bugs List',
+        path: '/bugs-list',
       },
       // {
       //   title: "Edit Bugs",
@@ -34,13 +34,13 @@ const admin = [
       // path: "/Delete-bugs",
       // },
       {
-        title: "Create Project",
-        path: "/create-project",
+        title: 'Create Project',
+        path: '/create-project',
       },
 
       {
-        title: "Projects list",
-        path: "/projects-list",
+        title: 'Projects list',
+        path: '/projects-list',
       },
       // {
       //   title: "Delete Project",
@@ -51,12 +51,12 @@ const admin = [
       // path: "/Delete-status",
       // },
       {
-        title: "Create labels",
-        path: "/create-label",
+        title: 'Create labels',
+        path: '/create-label',
       },
       {
-        title: "Labels list",
-        path: "/labels-list",
+        title: 'Labels list',
+        path: '/labels-list',
       },
 
       //{
@@ -75,36 +75,40 @@ const admin = [
   },
 
   {
-    action: "library_books",
-    title: "Report",
+    action: 'library_books',
+    title: 'Report',
     items: [
       {
-        title: "BugProgress",
-        path: "/BugProgress",
+        title: 'Bug Progress',
+        path: '/BugProgress',
       },
       {
-        title: "DeveloperProgress ",
-        path: "/DeveloperProgress",
+        title: 'Developer Progress ',
+        path: '/DeveloperProgress',
       },
       {
-        title: "MonthlyProgress ",
-        path: "/MonthlyProgress",
+        title: 'Monthly Progress ',
+        path: '/MonthlyProgress',
       },
       {
-        title: "SQAProgress ",
-        path: "/SQAProgress",
+        title: 'SQA Progress ',
+        path: '/SQAProgress',
       },
       {
-        title: "Bugs by project ",
-        path: "/projectWise",
+        title: 'Bugs By Project ',
+        path: '/projectWise',
       },
       {
-        title: "User report",
-        path: "/userReport",
+        title: 'User Report',
+        path: '/userReport',
       },
       {
-        title: "Bugs summary report",
-        path: "/bugsSummary",
+        title: 'Bugs Summary Report',
+        path: '/bugsSummary',
+      },
+      {
+        title: 'Developer Progress Chart',
+        path: '/progressReport',
       },
     ],
   },

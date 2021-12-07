@@ -106,10 +106,10 @@ const admin = [
         title: 'Bugs Summary Report',
         path: '/bugsSummary',
       },
-      {
-        title: 'Developer Progress Chart',
-        path: '/progressReport',
-      },
+      // {
+      //   title: 'Developer Progress Chart',
+      //   path: '/progressReport',
+      // },
     ],
   },
   {
@@ -118,7 +118,7 @@ const admin = [
     items: [
      
       {
-        title: 'Developer Progress Chart',
+        title: 'Developer Performance',
         path: '/progressReport',
       },
     ],

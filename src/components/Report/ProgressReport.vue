@@ -2,7 +2,7 @@
   <v-layout row>
     <v-flex>
       <v-card>
-        <v-card-title>Developer Progress Chart </v-card-title>
+        <v-card-title>DEVELOPER PERFORMANCE CHART ANALYSIS </v-card-title>
         <v-card-text>
           <v-form ref="project">
             <v-layout row>
@@ -18,7 +18,6 @@
                       v-model="startDate"
                       landscape
                       :max="new Date().toISOString()"
-                       
                     >
                     </v-date-picker>
                   </v-flex>
@@ -31,7 +30,6 @@
                       landscape
                       :disabled="!startDate ? true : false"
                       :max="new Date().toISOString()"
-                       
                     ></v-date-picker>
                   </v-flex>
                 </v-layout>
@@ -104,22 +102,45 @@ export default {
         );
 
         const labels = data.results.map((e) => e.name);
-
-        const datasets2 = [];
-        data.results.forEach((element) => {
-          const avg = element.avg;
-          datasets2.push({
-            label: element.name,
-            data: [avg],
-          });
+        // console.log("results",data.results)
+        const datasets2 = data.results.map((element) => {
+          // console.log("avg",avg)
+          return element.totalCredit;
         });
+        console.log("datasets2", datasets2);
+
+        function getRandomColor() {
+          var letters = "0123456789ABCDEF";
+          var color = "#";
+          for (var i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 16)];
+          }
+          return color;
+        }
 
         const chartdata = {
           labels,
-          datasets: datasets2,
+          datasets: [
+            {
+              label: "Data one",
+              data: [23, 43, 23, 23],
+              backgroundColor: [],
+            },
+          ],
         };
+        const backgroundColor = [];
+        for (let index = 0; index < data.results.length; index++) {
+          // const element = array[index];
+          backgroundColor.push(getRandomColor());
+        }
+          console.log("chartdata",backgroundColor)
+        chartdata.datasets[0].data = datasets2;
+        chartdata.datasets[0].backgroundColor = backgroundColor;
+
         this.chartdata = chartdata;
         this.loaded = true;
+
+        // console.log("chartdata",chartdata)
         if (data.length === 0) {
           this.alertType = "error";
           this.response = "No data available!";

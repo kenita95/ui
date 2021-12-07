@@ -79,7 +79,7 @@ export default {
         {
           text: "Bug id",
           align: "start",
-          // sortable: false,
+          //sortable: true,
           value: "id",
         },
         { text: "Title", value: "title" },
